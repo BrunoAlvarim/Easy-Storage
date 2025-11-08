@@ -216,9 +216,6 @@ function mostrarMenuMes(event, index) {
         <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="removerItemMes(${index}); miniMenu.classList.add('hidden');">
             Remover Item
         </button>
-        <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="verDetalhesItem(${index}, true); miniMenu.classList.add('hidden');">
-            Ver Detalhes
-        </button>
     `;
 
     miniMenu.classList.remove('hidden');
@@ -242,9 +239,6 @@ function mostrarMenuSaida(event, index) {
         </button>
         <button class="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50" onclick="excluirItemSaida(${index}); miniMenu.classList.add('hidden');">
             Excluir Definitivo
-        </button>
-        <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="verDetalhesItem(${index}, false); miniMenu.classList.add('hidden');">
-            Ver Detalhes
         </button>
     `;
 
@@ -381,7 +375,7 @@ function exportarPDFMes() {
         });
     }
 
-        // Salva o PDF
+    // Salva o PDF
     doc.save(`relatorio-mes-${new Date().toISOString().split('T')[0]}.pdf`);
 }
 

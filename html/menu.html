@@ -3,46 +3,210 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Menu</title>
+    <title>Dashboard - Easy Storage</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Biblioteca para gráficos (Chart.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-gradient-to-r from-indigo-100 via-white to-green-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gradient-to-r from-indigo-100 via-white to-green-100 min-h-screen">
 
-    <main class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-sm text-center space-y-6">
-        <h2 class="text-2xl font-bold text-indigo-700">Menu Principal</h2>
+    <!-- Barra Superior (Header) Fixa -->
+    <header class="fixed top-0 left-0 right-0 bg-indigo-700 text-white py-3 px-6 flex items-center shadow-md z-50">
+        <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+        </svg>
+        <h1 class="text-xl font-bold">Easy Storage</h1>
+    </header>
 
+    <!-- Barra Lateral (Sidebar) Fixa, Iniciando Abaixo do Header -->
+    <aside id="sidebar" class="fixed top-15 left-0 bg-indigo-700 text-white w-64 h-full p-6 shadow-lg transition-all duration-300 z-40">
+        <h2 class="text-2xl font-bold mb-8 text-center"></h2>
+        <nav class="space-y-4">
+            <a 
+                href="gerenciador.html" 
+                class="flex items-center bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition focus:outline-none focus:ring-4 focus:ring-blue-300"
+            >
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+                Gerenciador de Itens
+            </a>
+            <a 
+                href="relatorios.html" 
+                class="flex items-center bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition focus:outline-none focus:ring-4 focus:ring-green-300"
+            >
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                Relatórios
+            </a>
+            <a 
+                href="estoque.html" 
+                class="flex items-center bg-orange-600 text-white py-3 px-4 rounded-lg hover:bg-orange-700 transition focus:outline-none focus:ring-4 focus:ring-orange-300"
+            >
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+                Estoque
+            </a>
+            <a 
+                href="sobre.html" 
+                class="flex items-center bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition focus:outline-none focus:ring-4 focus:ring-purple-300"
+            >
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Sobre Nós
+            </a>
+            <a 
+                href="login.html" 
+                class="flex items-center bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition focus:outline-none focus:ring-4 focus:ring-red-300"
+            >
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                </svg>
+                Sair
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Conteúdo Principal (Dashboard) -->
+    <main id="main" class="ml-64 p-8 transition-all duration-300 pt-20">
+        <!-- Botão de Toggle (Seta) -->
         <button 
-            class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition focus:outline-none focus:ring-4 focus:ring-blue-300"
+            id="toggleSidebar" 
+            class="fixed top-4 left-64 bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition focus:outline-none focus:ring-4 focus:ring-indigo-300 z-50"
             type="button"
-            onclick="location.href='gerenciador.html'"
         >
-            Gerenciador de Itens
+            <svg id="arrowIcon" class="w-6 h-6 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
         </button>
 
-        <button 
-            class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition focus:outline-none focus:ring-4 focus:ring-green-300"
-            type="button"
-            onclick="location.href='relatorios.html'"
-        >
-            Relatórios
-        </button>
+        <!-- Dashboard -->
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-3xl font-bold text-indigo-700 mb-8">Dashboard</h1>
 
-        <button 
-            class="w-full bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700 transition focus:outline-none focus:ring-4 focus:ring-orange-300"
-            type="button"
-            onclick="location.href='estoque.html'"
-        >
-            Estoque
-        </button>
+            <!-- Cards de Métricas -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white shadow-lg rounded-2xl p-6 text-center">
+                    <svg class="w-12 h-12 text-blue-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                    <h3 class="text-xl font-semibold text-gray-800">Total de Itens</h3>
+                    <p id="totalItens" class="text-2xl font-bold text-blue-600">0</p>
+                </div>
+                <div class="bg-white shadow-lg rounded-2xl p-6 text-center">
+                    <svg class="w-12 h-12 text-green-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <h3 class="text-xl font-semibold text-gray-800">Itens no Estoque</h3>
+                    <p id="itensEstoque" class="text-2xl font-bold text-green-600">0</p>
+                </div>
+                <div class="bg-white shadow-lg rounded-2xl p-6 text-center">
+                    <svg class="w-12 h-12 text-orange-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
+                    <h3 class="text-xl font-semibold text-gray-800">Itens Removidos</h3>
+                    <p id="itensRemovidos" class="text-2xl font-bold text-orange-600">0</p>
+                </div>
+                <div class="bg-white shadow-lg rounded-2xl p-6 text-center">
+                    <svg class="w-12 h-12 text-purple-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                    <h3 class="text-xl font-semibold text-gray-800">Itens no Mês</h3>
+                    <p id="itensMes" class="text-2xl font-bold text-purple-600">0</p>
+                </div>
+            </div>
 
-        <button 
-            class="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition focus:outline-none focus:ring-4 focus:ring-red-300"
-            type="button"
-            onclick="location.href='login.html'"
-        >
-            Sair
-        </button>
+            <!-- Gráfico -->
+            <div class="bg-white shadow-lg rounded-2xl p-6">
+                <h2 class="text-2xl font-bold text-indigo-700 mb-4">Distribuição de Condições</h2>
+                <canvas id="chartCondicoes" width="400" height="200"></canvas>
+            </div>
+        </div>
     </main>
+
+    <script>
+        // Toggle da Sidebar
+        const sidebar = document.getElementById('sidebar');
+        const main = document.getElementById('main');
+        const toggleButton = document.getElementById('toggleSidebar');
+        const arrowIcon = document.getElementById('arrowIcon');
+
+        let isSidebarOpen = true;
+
+        toggleButton.addEventListener('click', () => {
+            if (isSidebarOpen) {
+                sidebar.classList.add('w-0', 'p-0', 'overflow-hidden');
+                sidebar.classList.remove('w-64', 'p-6');
+                main.classList.remove('ml-64');
+                main.classList.add('ml-0');
+                toggleButton.classList.remove('left-64');
+                toggleButton.classList.add('left-64');
+                arrowIcon.classList.add('rotate-180');
+            } else {
+                sidebar.classList.remove('w-0', 'p-0', 'overflow-hidden');
+                sidebar.classList.add('w-64', 'p-6');
+                main.classList.remove('ml-0');
+                main.classList.add('ml-64');
+                toggleButton.classList.remove('left-0');
+                toggleButton.classList.add('left-64');
+                arrowIcon.classList.remove('rotate-180');
+            }
+            isSidebarOpen = !isSidebarOpen;
+        });
+
+        // Funções do Dashboard
+        function atualizarDashboard() {
+            const itens = JSON.parse(localStorage.getItem("itens")) || [];
+            const removidos = JSON.parse(localStorage.getItem("removidos")) || [];
+            const mesAtual = new Date().getMonth();
+            const anoAtual = new Date().getFullYear();
+
+            const itensMes = itens.filter(item => {
+                const dataItem = new Date(item.data);
+                return dataItem.getMonth() === mesAtual && dataItem.getFullYear() === anoAtual;
+            });
+
+            document.getElementById('totalItens').textContent = itens.length + removidos.length;
+            document.getElementById('itensEstoque').textContent = itens.length;
+            document.getElementById('itensRemovidos').textContent = removidos.length;
+            document.getElementById('itensMes').textContent = itensMes.length;
+
+            // Gráfico de Condições
+            const condicoes = { bom: 0, medio: 0, ruim: 0 };
+            itens.forEach(item => {
+                if (condicoes[item.condicao] !== undefined) {
+                    condicoes[item.condicao]++;
+                }
+            });
+
+            const ctx = document.getElementById('chartCondicoes').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Bom', 'Médio', 'Ruim'],
+                    datasets: [{
+                        data: [condicoes.bom, condicoes.medio, condicoes.ruim],
+                        backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        }
+                    }
+                }
+            });
+        }
+
+        // Carregar dashboard ao inicializar
+        window.onload = atualizarDashboard;
+    </script>
 
 </body>
 </html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sobre Nós - Easy Storage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-indigo-100 via-white to-green-100 min-h-screen">
+
+    <!-- Botão Voltar no Topo -->
+    <div class="flex justify-end p-4">
+        <button onclick="window.history.back()" 
+                class="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400">
+            Voltar
+        </button>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="max-w-4xl mx-auto p-6 space-y-12">
+
+        <!-- Seção Sobre Nós -->
+        <section class="bg-white shadow-lg rounded-2xl p-8">
+            <div class="flex items-center mb-4">
+                <svg class="w-8 h-8 text-indigo-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <h1 class="text-3xl font-bold text-indigo-700">Sobre Nós</h1>
+            </div>
+            <p class="text-lg text-gray-700">
+                Bem-vindo ao <strong>Easy Storage</strong>, o seu sistema de gerenciamento de estoque simplificado e eficiente. Desenvolvido para facilitar o controle de itens em qualquer tipo de negócio, desde pequenas lojas até grandes empresas. Nosso objetivo é oferecer uma solução intuitiva e acessível para cadastrar, editar, remover e relatar itens, garantindo que você tenha sempre o controle total sobre seu inventário.
+            </p>
+        </section>
+
+        <!-- Seção Funcionalidades -->
+        <section class="bg-white shadow-lg rounded-2xl p-8">
+            <div class="flex items-center mb-4">
+                <svg class="w-8 h-8 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <h2 class="text-3xl font-bold text-green-600">Nossas Funcionalidades Principais</h2>
+            </div>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+                <li class="flex items-start">
+                    <svg class="w-6 h-6 text-blue-600 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                    <div>
+                        <strong>Gerenciamento de Itens:</strong> Cadastre novos itens com código, nome, descrição e condição.
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-6 h-6 text-orange-600 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                    <div>
+                        <strong>Relatórios Detalhados:</strong> Visualize itens cadastrados no mês atual e aqueles que saíram do estoque.
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-6 h-6 text-purple-600 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
+                    <div>
+                        <strong>Controle de Estoque:</strong> Monitore e atualize o status dos produtos facilmente.
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-6 h-6 text-red-600 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <div>
+                        <strong>Exportação de Dados:</strong> Gere relatórios em PDF para análise externa.
+                    </div>
+                </li>
+                <li class="flex items-start md:col-span-2">
+                    <svg class="w-6 h-6 text-indigo-600 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    <div>
+                        <strong>Interface Amigável:</strong> Design moderno e responsivo, acessível em dispositivos móveis e desktop.
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Seção Missão -->
+        <section class="bg-white shadow-lg rounded-2xl p-8">
+            <div class="flex items-center mb-4">
+                <svg class="w-8 h-8 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <h2 class="text-3xl font-bold text-blue-600">Nossa Missão</h2>
+            </div>
+            <p class="text-lg text-gray-700">
+                Facilitar o gerenciamento de estoque para empresas de todos os tamanhos, promovendo eficiência, sustentabilidade e redução de desperdícios através de tecnologia acessível.
+            </p>
+        </section>
+
+        <!-- Seção Integrantes -->
+        <section class="bg-white shadow-lg rounded-2xl p-8">
+            <div class="flex items-center mb-6">
+                <svg class="w-8 h-8 text-purple-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+                <h2 class="text-3xl font-bold text-purple-600">Integrantes do Grupo</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <img src="https://media.istockphoto.com/id/1142192548/vector/man-avatar-profile-male-face-silhouette-or-icon-isolated-on-white-background-vector.webp?b=1&s=612x612&w=0&k=20&c=QSm6m0T5krg7AuimoQ2Kc7jVQsZhFwOCMp2aJTDYBBE=" alt="Álvaro Gomes Fenerick" class="w-24 h-24 rounded-full mx-auto mb-2 object-cover">
+                    <p class="font-semibold text-gray-800">Álvaro Gomes Fenerick</p>
+                </div>
+                <div class="text-center">
+                    <img src="https://media.istockphoto.com/id/1142192548/vector/man-avatar-profile-male-face-silhouette-or-icon-isolated-on-white-background-vector.webp?b=1&s=612x612&w=0&k=20&c=QSm6m0T5krg7AuimoQ2Kc7jVQsZhFwOCMp2aJTDYBBE=" alt="Biank Henrique Gonçalves Lopes" class="w-24 h-24 rounded-full mx-auto mb-2 object-cover">
+                    <p class="font-semibold text-gray-800">Biank Henrique Gonçalves Lopes</p>
+                </div>
+                <div class="text-center">
+                    <img src="https://media.istockphoto.com/id/1142192548/vector/man-avatar-profile-male-face-silhouette-or-icon-isolated-on-white-background-vector.webp?b=1&s=612x612&w=0&k=20&c=QSm6m0T5krg7AuimoQ2Kc7jVQsZhFwOCMp2aJTDYBBE=" alt="Felipe Rosendo da Silva" class="w-24 h-24 rounded-full mx-auto mb-2 object-cover">
+                    <p class="font-semibold text-gray-800">Felipe Rosendo da Silva</p>
+                </div>
+                <div class="text-center">
+                    <img src="https://media.istockphoto.com/id/1142192548/vector/man-avatar-profile-male-face-silhouette-or-icon-isolated-on-white-background-vector.webp?b=1&s=612x612&w=0&k=20&c=QSm6m0T5krg7AuimoQ2Kc7jVQsZhFwOCMp2aJTDYBBE=" alt="Henrique Marques de Oliveira" class="w-24 h-24 rounded-full mx-auto mb-2 object-cover">
+                    <p class="font-semibold text-gray-800">Henrique Marques de Oliveira</p>
+                </div>
+                <div class="text-center md:col-span-2 lg:col-span-1">
+                    <img src="https://media.istockphoto.com/id/1142192548/vector/man-avatar-profile-male-face-silhouette-or-icon-isolated-on-white-background-vector.webp?b=1&s=612x612&w=0&k=20&c=QSm6m0T5krg7AuimoQ2Kc7jVQsZhFwOCMp2aJTDYBBE=" alt="Mateus Alves Moraes" class="w-24 h-24 rounded-full mx-auto mb-2 object-cover">
+                    <p class="font-semibold text-gray-800">Mateus Alves Moraes</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Contato -->
+        <section class="bg-white shadow-lg rounded-2xl p-8">
+            <div class="flex items-center mb-4">
+                <svg class="w-8 h-8 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+                <h2 class="text-3xl font-bold text-red-600">Contato</h2>
+            </div>
+            <p class="text-lg text-gray-700">
+                Para mais informações ou suporte, entre em contato conosco via email: <a href="mailto:suporte@easystorage.com" class="text-indigo-600 hover:underline">suporte@easystorage.com</a>.
+            </p>
+        </section>
+
+    </div>
+
+</body>
+</html>
