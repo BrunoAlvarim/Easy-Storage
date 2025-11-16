@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard - Easy Storage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Biblioteca para gráficos (Chart.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(to right, #8b5cf6, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .sidebar-item {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: #8b5cf6;
+        }
+        
+        .sidebar-item.active {
+            background: rgba(139, 92, 246, 0.2);
+            border-left-color: #8b5cf6;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .profit-positive {
+            color: #10B981;
+        }
+        
+        .profit-negative {
+            color: #EF4444;
+        }
+        
+        .profit-neutral {
+            color: #6B7280;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen text-white relative overflow-x-hidden">
+
+    <!-- Layout Principal -->
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="glass-effect w-64 min-h-screen p-6 transition-all duration-300 z-40">
+            <!-- Logo -->
+            <div class="flex items-center mb-10">
+                <div class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-500 rounded-lg flex items-center justify-center mr-3">
+                    <i class="fas fa-boxes text-white"></i>
+                </div>
+                <h1 class="text-xl font-bold gradient-text">Easy Storage</h1>
+            </div>
+
+            <!-- Menu de Navegação -->
+            <nav class="space-y-2">
+                <a href="dashboard.html" class="sidebar-item active flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-tachometer-alt mr-3 text-purple-400"></i>
+                    <span>Dashboard</span>
+                </a>
+              <a href="lucros.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-chart-line mr-3 text-green-400"></i>
+                    <span>Gestão de Lucros</span>
+                </a>
+                <a href="gerenciador.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-boxes mr-3 text-blue-400"></i>
+                    <span>Gerenciador</span>
+                </a>
+                <a href="estoque.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-warehouse mr-3 text-green-400"></i>
+                    <span>Estoque</span>
+                </a>
+                <a href="relatorios.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-chart-bar mr-3 text-yellow-400"></i>
+                    <span>Relatórios</span>
+                </a>
+                <a href="sobre.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-info-circle mr-3 text-indigo-400"></i>
+                    <span>Sobre Nós</span>
+                </a>
+            </nav>
+
+            <!-- Sair -->
+            <div class="mt-auto pt-10">
+                <a href="login.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg text-red-400">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Sair</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main id="main" class="flex-1 p-8 transition-all duration-300">
+            <!-- Header -->
+            <header class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold gradient-text">Dashboard</h1>
+                    <p class="text-gray-400">Visão geral do seu estoque e desempenho</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="usuario.html" class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center hover:shadow-lg transition-shadow">
+                        <i class="fas fa-user text-white"></i>
+                    </a>
+                </div>
+            </header>
+
+            <!-- Cards de Métricas -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="glass-effect rounded-xl p-6 card-hover">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-400">Total de Itens</p>
+                            <h3 id="totalItens" class="text-2xl font-bold mt-2">0</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-boxes text-blue-400"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center text-sm">
+                        <i class="fas fa-arrow-up text-green-400 mr-1"></i>
+                        <span class="text-green-400">12%</span>
+                        <span class="text-gray-400 ml-2">desde último mês</span>
+                    </div>
+                </div>
+
+                <div class="glass-effect rounded-xl p-6 card-hover">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-400">Itens no Estoque</p>
+                            <h3 id="itensEstoque" class="text-2xl font-bold mt-2">0</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-warehouse text-green-400"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center text-sm">
+                        <i class="fas fa-arrow-up text-green-400 mr-1"></i>
+                        <span class="text-green-400">5%</span>
+                        <span class="text-gray-400 ml-2">desde última semana</span>
+                    </div>
+                </div>
+
+                <div class="glass-effect rounded-xl p-6 card-hover">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-400">Lucro Total</p>
+                            <h3 id="lucroTotal" class="text-2xl font-bold mt-2">R$ 0,00</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-dollar-sign text-purple-400"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center text-sm">
+                        <i class="fas fa-arrow-up text-green-400 mr-1"></i>
+                        <span class="text-green-400">18%</span>
+                        <span class="text-gray-400 ml-2">desde último mês</span>
+                    </div>
+                </div>
+
+                <div class="glass-effect rounded-xl p-6 card-hover">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-400">Itens Vendidos</p>
+                            <h3 id="itensVendidos" class="text-2xl font-bold mt-2">0</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-chart-line text-orange-400"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center text-sm">
+                        <i class="fas fa-arrow-up text-green-400 mr-1"></i>
+                        <span class="text-green-400">8%</span>
+                        <span class="text-gray-400 ml-2">desde última semana</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráficos e Estatísticas -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Gráfico de Entradas e Saídas -->
+                <div class="glass-effect rounded-xl p-6">
+                    <h2 class="text-xl font-bold mb-4">Entradas vs Saídas</h2>
+                    <div class="chart-container">
+                        <canvas id="chartEntradasSaidas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico de Condições -->
+                <div class="glass-effect rounded-xl p-6">
+                    <h2 class="text-xl font-bold mb-4">Condição dos Itens</h2>
+                    <div class="chart-container">
+                        <canvas id="chartCondicoes"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Itens Recentes e Estatísticas Adicionais -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Itens Recentes -->
+                <div class="glass-effect rounded-xl p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold">Itens Recentes</h2>
+                        <a href="gerenciador.html" class="text-sm text-purple-400 hover:text-purple-300">Ver todos</a>
+                    </div>
+                    <div class="space-y-4" id="itensRecentes">
+                        <!-- Itens serão carregados dinamicamente -->
+                        <div class="text-center py-4 text-gray-500">
+                            <i class="fas fa-box-open text-2xl mb-2"></i>
+                            <p>Nenhum item cadastrado</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estatísticas Adicionais -->
+                <div class="glass-effect rounded-xl p-6">
+                    <h2 class="text-xl font-bold mb-4">Estatísticas do Mês</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Itens Adicionados</span>
+                            <span id="itensMes" class="font-bold">0</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Itens Removidos</span>
+                            <span id="itensRemovidos" class="font-bold">0</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Lucro do Mês</span>
+                            <span id="lucroMes" class="font-bold text-green-400">R$ 0,00</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Taxa de Rotatividade</span>
+                            <span id="taxaRotatividade" class="font-bold">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Botão Toggle Sidebar (Mobile) -->
+    <button id="toggleSidebar" class="lg:hidden fixed bottom-4 right-4 bg-purple-600 text-white p-3 rounded-full shadow-lg z-50">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <script>
+        // Variáveis globais para os gráficos
+        let chartEntradasSaidas = null;
+        let chartCondicoes = null;
+
+        // Toggle da Sidebar para Mobile
+        const sidebar = document.getElementById('sidebar');
+        const toggleButton = document.getElementById('toggleSidebar');
+
+        toggleButton.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+        });
+
+        // Função para calcular lucros baseada no lucros.js
+        function calcularLucros() {
+            const lucros = JSON.parse(localStorage.getItem("lucros")) || {};
+            
+            let receitaTotal = 0;
+            let custoTotal = 0;
+            let custoReparoTotal = 0;
+
+            Object.values(lucros).forEach(lucro => {
+                receitaTotal += lucro.venda || 0;
+                custoTotal += lucro.custo || 0;
+                custoReparoTotal += lucro.reparo || 0;
+            });
+
+            const lucroTotal = receitaTotal - custoTotal - custoReparoTotal;
+            const margemMedia = custoTotal > 0 ? (lucroTotal / custoTotal) * 100 : 0;
+
+            return {
+                lucroTotal: lucroTotal,
+                receitaTotal: receitaTotal,
+                custoTotal: custoTotal + custoReparoTotal,
+                margemMedia: margemMedia
+            };
+        }
+
+        // Funções do Dashboard
+        function atualizarDashboard() {
+            const itens = JSON.parse(localStorage.getItem("itens")) || [];
+            const removidos = JSON.parse(localStorage.getItem("removidos")) || [];
+            const mesAtual = new Date().getMonth();
+            const anoAtual = new Date().getFullYear();
+
+            // Calcular itens do mês
+            const itensMes = itens.filter(item => {
+                const dataItem = new Date(item.data);
+                return dataItem.getMonth() === mesAtual && dataItem.getFullYear() === anoAtual;
+            });
+
+            // Calcular lucro usando a função do módulo de lucros
+            const dadosLucro = calcularLucros();
+            const lucroTotal = dadosLucro.lucroTotal;
+
+            // Calcular lucro do mês (simplificado)
+            const lucroMes = itensMes.reduce((total, item) => {
+                const lucros = JSON.parse(localStorage.getItem("lucros")) || {};
+                const lucroItem = lucros[item.codigo];
+                if (lucroItem) {
+                    return total + (lucroItem.venda || 0) - (lucroItem.custo || 0) - (lucroItem.reparo || 0);
+                }
+                return total;
+            }, 0);
+
+            // Atualizar métricas
+            document.getElementById('totalItens').textContent = itens.length + removidos.length;
+            document.getElementById('itensEstoque').textContent = itens.length;
+            document.getElementById('itensRemovidos').textContent = removidos.length;
+            document.getElementById('itensMes').textContent = itensMes.length;
+            document.getElementById('lucroTotal').textContent = `R$ ${lucroTotal.toFixed(2)}`;
+            document.getElementById('lucroMes').textContent = `R$ ${lucroMes.toFixed(2)}`;
+            document.getElementById('itensVendidos').textContent = removidos.length;
+            
+            // Aplicar cor ao lucro baseado no valor
+            const lucroTotalElement = document.getElementById('lucroTotal');
+            lucroTotalElement.className = `text-2xl font-bold mt-2 ${lucroTotal > 0 ? 'profit-positive' : lucroTotal < 0 ? 'profit-negative' : 'profit-neutral'}`;
+            
+            const lucroMesElement = document.getElementById('lucroMes');
+            lucroMesElement.className = `font-bold ${lucroMes > 0 ? 'text-green-400' : lucroMes < 0 ? 'text-red-400' : 'text-gray-400'}`;
+            
+            // Calcular taxa de rotatividade
+            const taxaRotatividade = itens.length > 0 ? 
+                Math.round((removidos.length / (itens.length + removidos.length)) * 100) : 0;
+            document.getElementById('taxaRotatividade').textContent = `${taxaRotatividade}%`;
+
+            // Atualizar itens recentes
+            atualizarItensRecentes(itens);
+
+            // Atualizar gráficos
+            atualizarGraficoCondicoes(itens);
+            atualizarGraficoEntradasSaidas(itens, removidos);
+        }
+
+        function atualizarGraficoCondicoes(itens) {
+            const ctx = document.getElementById('chartCondicoes');
+            
+            // Calcular condições
+            const condicoes = { bom: 0, medio: 0, ruim: 0 };
+            itens.forEach(item => {
+                if (condicoes[item.condicao] !== undefined) {
+                    condicoes[item.condicao]++;
+                }
+            });
+
+            // Destruir gráfico anterior se existir
+            if (chartCondicoes) {
+                chartCondicoes.destroy();
+            }
+
+            // Criar novo gráfico
+            chartCondicoes = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Bom', 'Médio', 'Ruim'],
+                    datasets: [{
+                        data: [condicoes.bom, condicoes.medio, condicoes.ruim],
+                        backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#E5E7EB',
+                                font: {
+                                    family: 'Poppins',
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        }
+
+        function atualizarGraficoEntradasSaidas(itens, removidos) {
+            const ctx = document.getElementById('chartEntradasSaidas');
+            
+            // Calcular entradas e saídas dos últimos 6 meses
+            const { entradasMensais, saidasMensais } = calcularEntradasSaidasUltimosMeses(itens, removidos, 6);
+            
+            // Destruir gráfico anterior se existir
+            if (chartEntradasSaidas) {
+                chartEntradasSaidas.destroy();
+            }
+
+            // Criar novo gráfico
+            chartEntradasSaidas = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: obterNomesMeses(6),
+                    datasets: [
+                        {
+                            label: 'Entradas',
+                            data: entradasMensais,
+                            backgroundColor: '#10B981',
+                            borderRadius: 4,
+                            barPercentage: 0.6,
+                            categoryPercentage: 0.8
+                        },
+                        {
+                            label: 'Saídas',
+                            data: saidasMensais,
+                            backgroundColor: '#EF4444',
+                            borderRadius: 4,
+                            barPercentage: 0.6,
+                            categoryPercentage: 0.8
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#E5E7EB',
+                                font: {
+                                    family: 'Poppins',
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#E5E7EB',
+                                font: {
+                                    family: 'Poppins',
+                                    size: 11
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#E5E7EB',
+                                font: {
+                                    family: 'Poppins',
+                                    size: 11
+                                },
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Função para calcular entradas e saídas dos últimos meses
+        function calcularEntradasSaidasUltimosMeses(itens, removidos, meses) {
+            const hoje = new Date();
+            const entradasMensais = new Array(meses).fill(0);
+            const saidasMensais = new Array(meses).fill(0);
+            
+            // Calcular entradas
+            itens.forEach(item => {
+                const dataItem = new Date(item.data);
+                const diffMeses = (hoje.getFullYear() - dataItem.getFullYear()) * 12 + (hoje.getMonth() - dataItem.getMonth());
+                if (diffMeses < meses && diffMeses >= 0) {
+                    entradasMensais[meses - 1 - diffMeses]++;
+                }
+            });
+            
+            // Calcular saídas
+            removidos.forEach(item => {
+                const dataItem = new Date(item.dataRemocao || item.data);
+                const diffMeses = (hoje.getFullYear() - dataItem.getFullYear()) * 12 + (hoje.getMonth() - dataItem.getMonth());
+                if (diffMeses < meses && diffMeses >= 0) {
+                    saidasMensais[meses - 1 - diffMeses]++;
+                }
+            });
+            
+            return { entradasMensais, saidasMensais };
+        }
+
+        // Função para obter nomes dos últimos meses
+        function obterNomesMeses(meses) {
+            const hoje = new Date();
+            const nomesMeses = [];
+            for (let i = meses - 1; i >= 0; i--) {
+                const data = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
+                nomesMeses.push(data.toLocaleDateString('pt-BR', { month: 'short' }));
+            }
+            return nomesMeses;
+        }
+
+        function atualizarItensRecentes(itens) {
+            const container = document.getElementById('itensRecentes');
+            
+            if (itens.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-4 text-gray-500">
+                        <i class="fas fa-box-open text-2xl mb-2"></i>
+                        <p>Nenhum item cadastrado</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Ordenar por data (mais recentes primeiro) e pegar os 5 primeiros
+            const recentes = [...itens]
+                .sort((a, b) => new Date(b.data) - new Date(a.data))
+                .slice(0, 5);
+
+            container.innerHTML = recentes.map(item => `
+                <div class="flex items-center justify-between p-3 rounded-lg bg-gray-800/50">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-${getCorCondicao(item.condicao)}-500/20 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-box text-${getCorCondicao(item.condicao)}-400"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium">${item.nome}</p>
+                            <p class="text-xs text-gray-400">${formatarData(item.data)}</p>
+                        </div>
+                    </div>
+                    <span class="px-2 py-1 text-xs rounded-full bg-${getCorCondicao(item.condicao)}-500/20 text-${getCorCondicao(item.condicao)}-400">
+                        ${item.condicao.charAt(0).toUpperCase() + item.condicao.slice(1)}
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        function getCorCondicao(condicao) {
+            switch(condicao) {
+                case 'bom': return 'green';
+                case 'medio': return 'yellow';
+                case 'ruim': return 'red';
+                default: return 'gray';
+            }
+        }
+
+        function formatarData(dataString) {
+            const data = new Date(dataString);
+            return data.toLocaleDateString('pt-BR');
+        }
+
+        // Carregar dashboard ao inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            atualizarDashboard();
+        });
+
+        // Atualizar dashboard quando houver mudanças no localStorage (de outras páginas)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'itens' || e.key === 'removidos' || e.key === 'lucros') {
+                atualizarDashboard();
+            }
+        });
+    </script>
+
+</body>
+</html>

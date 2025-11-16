@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gestão de Lucros - Easy Storage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Biblioteca para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(to right, #8b5cf6, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .sidebar-item {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: #8b5cf6;
+        }
+        
+        .sidebar-item.active {
+            background: rgba(139, 92, 246, 0.2);
+            border-left-color: #8b5cf6;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .profit-positive {
+            color: #10B981;
+        }
+        
+        .profit-negative {
+            color: #EF4444;
+        }
+        
+        .profit-neutral {
+            color: #6B7280;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen text-white">
+
+    <!-- Layout Principal -->
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="glass-effect w-64 min-h-screen p-6 z-40">
+            <!-- Logo -->
+            <div class="flex items-center mb-10">
+                <div class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-500 rounded-lg flex items-center justify-center mr-3">
+                    <i class="fas fa-boxes text-white"></i>
+                </div>
+                <h1 class="text-xl font-bold gradient-text">Easy Storage</h1>
+            </div>
+
+            <!-- Menu de Navegação -->
+            <nav class="space-y-2">
+                <a href="dashboard.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-tachometer-alt mr-3 text-purple-400"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="lucros.html" class="sidebar-item active flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-chart-line mr-3 text-green-400"></i>
+                    <span>Gestão de Lucros</span>
+                </a>
+                <a href="gerenciador.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-boxes mr-3 text-blue-400"></i>
+                    <span>Gerenciador</span>
+                </a>
+                <a href="estoque.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-warehouse mr-3 text-green-400"></i>
+                    <span>Estoque</span>
+                </a>
+                <a href="relatorios.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-chart-bar mr-3 text-yellow-400"></i>
+                    <span>Relatórios</span>
+                </a>
+                <a href="sobre.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-info-circle mr-3 text-indigo-400"></i>
+                    <span>Sobre Nós</span>
+                </a>
+            </nav>
+
+            <!-- Sair -->
+            <div class="mt-auto pt-10">
+                <a href="login.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg text-red-400">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Sair</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main class="flex-1 p-8">
+            <!-- Header -->
+            <header class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold gradient-text">Gestão de Lucros</h1>
+                    <p class="text-gray-400">Controle de custos, receitas e lucratividade dos itens</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="usuario.html" class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center hover:shadow-lg transition-shadow">
+                        <i class="fas fa-user text-white"></i>
+                    </a>
+                </div>
+            </header>
+
+            <!-- Conteúdo -->
+            <div class="max-w-7xl mx-auto space-y-8">
+                <!-- Cards de Resumo -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="glass-effect rounded-xl p-6 text-center card-hover">
+                        <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-dollar-sign text-green-400"></i>
+                        </div>
+                        <p class="text-gray-400 text-sm">Lucro Total</p>
+                        <p id="lucroTotal" class="text-2xl font-bold profit-positive">R$ 0,00</p>
+                    </div>
+                    <div class="glass-effect rounded-xl p-6 text-center card-hover">
+                        <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-money-bill-wave text-blue-400"></i>
+                        </div>
+                        <p class="text-gray-400 text-sm">Receita Total</p>
+                        <p id="receitaTotal" class="text-2xl font-bold">R$ 0,00</p>
+                    </div>
+                    <div class="glass-effect rounded-xl p-6 text-center card-hover">
+                        <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-tools text-red-400"></i>
+                        </div>
+                        <p class="text-gray-400 text-sm">Custo Total</p>
+                        <p id="custoTotal" class="text-2xl font-bold">R$ 0,00</p>
+                    </div>
+                    <div class="glass-effect rounded-xl p-6 text-center card-hover">
+                        <div class="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-percentage text-yellow-400"></i>
+                        </div>
+                        <p class="text-gray-400 text-sm">Margem Média</p>
+                        <p id="margemMedia" class="text-2xl font-bold profit-positive">0%</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Formulário de Gestão de Lucros -->
+                    <section class="glass-effect rounded-xl p-6 card-hover">
+                        <h2 class="text-xl font-bold gradient-text mb-6">Configurar Lucro por Item</h2>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-400 text-sm mb-2">Selecionar Item</label>
+                                <select id="selectItem" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500">
+                                    <option value="">Selecione um item...</option>
+                                </select>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-gray-400 text-sm mb-2">Preço de Custo (R$)</label>
+                                    <input type="number" id="precoCusto" step="0.01" min="0"
+                                           class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500"
+                                           placeholder="0,00">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-400 text-sm mb-2">Preço de Venda (R$)</label>
+                                    <input type="number" id="precoVenda" step="0.01" min="0"
+                                           class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500"
+                                           placeholder="0,00">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-gray-400 text-sm mb-2">Custo de Reparo/Manutenção (R$)</label>
+                                <input type="number" id="custoReparo" step="0.01" min="0"
+                                       class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500"
+                                       placeholder="0,00">
+                            </div>
+
+                            <!-- Cálculo Automático -->
+                            <div class="bg-gray-800/50 rounded-lg p-4">
+                                <h3 class="font-semibold text-white mb-3">Pré-visualização do Lucro</h3>
+                                <div class="grid grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                        <span class="text-gray-400">Lucro Unitário:</span>
+                                        <span id="previewLucro" class="font-semibold profit-positive block">R$ 0,00</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-400">Margem:</span>
+                                        <span id="previewMargem" class="font-semibold profit-positive block">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button onclick="salvarLucroItem()" 
+                                    class="w-full bg-gradient-to-r from-green-600 to-blue-600 text-white py-3 px-6 rounded-lg hover:from-green-700 hover:to-blue-700 transition">
+                                <i class="fas fa-save mr-2"></i>Salvar Configuração de Lucro
+                            </button>
+                        </div>
+                    </section>
+
+                    <!-- Gráfico de Lucratividade -->
+                    <section class="glass-effect rounded-xl p-6 card-hover">
+                        <h2 class="text-xl font-bold gradient-text mb-6">Distribuição de Lucros</h2>
+                        <canvas id="chartLucros" width="400" height="300"></canvas>
+                    </section>
+                </div>
+
+                <!-- Tabela de Itens com Lucro -->
+                <section class="glass-effect rounded-xl p-6 card-hover">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold gradient-text">Itens com Lucro Configurado</h2>
+                        <button onclick="exportarRelatorioLucros()" 
+                                class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+                            <i class="fas fa-file-export mr-2"></i>Exportar Relatório
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full" id="tabelaLucros">
+                            <thead>
+                                <tr class="border-b border-gray-700">
+                                    <th class="py-4 px-4 text-left text-gray-400 font-medium">Item</th>
+                                    <th class="py-4 px-4 text-left text-gray-400 font-medium">Custo</th>
+                                    <th class="py-4 px-4 text-left text-gray-400 font-medium">Venda</th>
+                                    <th class="py-4 px-4 text-left text-gray-400 font-medium">Reparo</th>
+                                    <th class="py-4 px-4 text-left text-gray-400 font-medium">Lucro</th>
+                                    <th class="py-4 px-4 text-left text-gray-400 font-medium">Margem</th>
+                                    <th class="py-4 px-4 text-left text-gray-400 font-medium">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelaLucrosBody" class="divide-y divide-gray-700">
+                                <!-- Itens serão carregados aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Mensagem de lista vazia -->
+                    <div id="listaLucrosVazia" class="hidden text-center py-12">
+                        <div class="w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-chart-line text-gray-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-400 mb-2">Nenhum lucro configurado</h3>
+                        <p class="text-gray-500">Configure os lucros dos itens usando o formulário acima</p>
+                    </div>
+                </section>
+
+                <!-- Análise de Rentabilidade -->
+                <section class="glass-effect rounded-xl p-6 card-hover">
+                    <h2 class="text-xl font-bold gradient-text mb-6">Análise de Rentabilidade</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center p-6 rounded-xl bg-gray-800/50">
+                            <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-arrow-up text-green-400 text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-white mb-2">Itens Mais Rentáveis</h3>
+                            <p id="itemMaisRentavel" class="text-gray-400 text-sm">-</p>
+                            <p class="text-green-400 font-semibold mt-2" id="margemMaisRentavel">0%</p>
+                        </div>
+                        <div class="text-center p-6 rounded-xl bg-gray-800/50">
+                            <div class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-arrow-down text-red-400 text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-white mb-2">Itens Menos Rentáveis</h3>
+                            <p id="itemMenosRentavel" class="text-gray-400 text-sm">-</p>
+                            <p class="text-red-400 font-semibold mt-2" id="margemMenosRentavel">0%</p>
+                        </div>
+                        <div class="text-center p-6 rounded-xl bg-gray-800/50">
+                            <div class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-balance-scale text-blue-400 text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-white mb-2">Margem Média</h3>
+                            <p class="text-2xl font-bold profit-positive mb-2" id="analiseMargemMedia">0%</p>
+                            <p class="text-gray-400 text-sm" id="totalItensComLucro">0 itens analisados</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast de Notificação -->
+    <div id="toast" class="hidden fixed top-4 right-4 z-50 glass-effect rounded-lg shadow-lg p-4 max-w-sm w-full mx-4 transition-all duration-300 opacity-0 transform translate-x-full">
+        <div id="toastConteudo" class="flex items-center">
+            <!-- Ícone e mensagem dinâmicos -->
+        </div>
+    </div>
+
+    <!-- Botão Toggle Sidebar (Mobile) -->
+    <button id="toggleSidebar" class="lg:hidden fixed bottom-4 right-4 bg-purple-600 text-white p-3 rounded-full shadow-lg z-50">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Script -->
+    <script src="../js/lucros.js"></script>
+</body>
+</html>

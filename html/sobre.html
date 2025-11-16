@@ -5,144 +5,457 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sobre Nós - Easy Storage</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(to right, #8b5cf6, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .sidebar-item {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: #8b5cf6;
+        }
+        
+        .sidebar-item.active {
+            background: rgba(139, 92, 246, 0.2);
+            border-left-color: #8b5cf6;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-r from-indigo-100 via-white to-green-100 min-h-screen">
+<body class="bg-gray-900 min-h-screen text-white">
 
-    <!-- Botão Voltar no Topo -->
-    <div class="flex justify-end p-4">
-        <button onclick="window.history.back()" 
-                class="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400">
-            Voltar
-        </button>
+    <!-- Layout Principal -->
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="glass-effect w-64 min-h-screen p-6 z-40">
+            <!-- Logo -->
+            <div class="flex items-center mb-10">
+                <div class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-500 rounded-lg flex items-center justify-center mr-3">
+                    <i class="fas fa-boxes text-white"></i>
+                </div>
+                <h1 class="text-xl font-bold gradient-text">Easy Storage</h1>
+            </div>
+
+            <!-- Menu de Navegação -->
+            <nav class="space-y-2">
+                <a href="dashboard.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-tachometer-alt mr-3 text-purple-400"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="lucros.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-chart-line mr-3 text-green-400"></i>
+                    <span>Gestão de Lucros</span>
+                </a>
+                <a href="gerenciador.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-boxes mr-3 text-blue-400"></i>
+                    <span>Gerenciador</span>
+                </a>
+                <a href="estoque.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-warehouse mr-3 text-green-400"></i>
+                    <span>Estoque</span>
+                </a>
+                <a href="relatorios.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-chart-bar mr-3 text-yellow-400"></i>
+                    <span>Relatórios</span>
+                </a>
+                <a href="sobre.html" class="sidebar-item active flex items-center py-3 px-4 rounded-lg">
+                    <i class="fas fa-info-circle mr-3 text-indigo-400"></i>
+                    <span>Sobre Nós</span>
+                </a>
+            </nav>
+
+            <!-- Sair -->
+            <div class="mt-auto pt-10">
+                <a href="login.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg text-red-400">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Sair</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main class="flex-1 p-8">
+            <!-- Header -->
+            <header class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold gradient-text">Sobre Nós</h1>
+                    <p class="text-gray-400">Conheça mais sobre o Easy Storage e nossa equipe</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="usuario.html" class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center hover:shadow-lg transition-shadow">
+                        <i class="fas fa-user text-white"></i>
+                    </a>
+                </div>
+            </header>
+
+            <!-- Conteúdo -->
+            <div class="max-w-6xl mx-auto space-y-8">
+
+                <!-- Seção Sobre Nós -->
+                <section class="glass-effect rounded-xl p-8 card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-info-circle text-purple-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold gradient-text">Sobre Nós</h2>
+                    </div>
+                    <p class="text-lg text-gray-300 leading-relaxed mb-4">
+                        Bem-vindo ao <strong class="text-white">Easy Storage</strong>, o seu sistema de gerenciamento de estoque simplificado e eficiente. Desenvolvido para facilitar o controle de itens em qualquer tipo de negócio, desde pequenas lojas até grandes empresas.
+                    </p>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        Nosso objetivo é oferecer uma solução intuitiva e acessível para cadastrar, editar, remover e relatar itens, garantindo que você tenha sempre o controle total sobre seu inventário. Com uma interface moderna e responsiva, o Easy Storage se adapta às necessidades do seu negócio.
+                    </p>
+                </section>
+
+                <!-- Seção História -->
+                <section class="glass-effect rounded-xl p-8 card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-history text-yellow-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold gradient-text">Nossa História</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center mr-3 mt-1">
+                                    <i class="fas fa-rocket text-blue-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-white mb-1">Início do Projeto</h3>
+                                    <p class="text-gray-400 text-sm">O Easy Storage nasceu como um projeto acadêmico em 2024, com o objetivo de criar uma solução prática para gestão de estoques.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center mr-3 mt-1">
+                                    <i class="fas fa-code text-green-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-white mb-1">Desenvolvimento</h3>
+                                    <p class="text-gray-400 text-sm">Desenvolvido com as mais modernas tecnologias web, garantindo performance e segurança para nossos usuários.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center mr-3 mt-1">
+                                    <i class="fas fa-users text-purple-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-white mb-1">Expansão</h3>
+                                    <p class="text-gray-400 text-sm">De projeto acadêmico para solução empresarial, atendendo diversos segmentos do mercado.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 bg-red-500/20 rounded-full flex items-center justify-center mr-3 mt-1">
+                                    <i class="fas fa-trophy text-red-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-white mb-1">Reconhecimento</h3>
+                                    <p class="text-gray-400 text-sm">Sistema elogiado por sua usabilidade e eficiência na gestão de inventários.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seção Funcionalidades -->
+                <section class="glass-effect rounded-xl p-8 card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-check-circle text-green-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold gradient-text">Nossas Funcionalidades Principais</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex items-start p-4 rounded-lg bg-gray-800/50">
+                            <i class="fas fa-box text-blue-400 text-lg mt-1 mr-4"></i>
+                            <div>
+                                <h3 class="font-semibold text-white mb-1">Gerenciamento de Itens</h3>
+                                <p class="text-gray-400 text-sm">Cadastre novos itens com código, nome, descrição e condição.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-4 rounded-lg bg-gray-800/50">
+                            <i class="fas fa-chart-bar text-orange-400 text-lg mt-1 mr-4"></i>
+                            <div>
+                                <h3 class="font-semibold text-white mb-1">Relatórios Detalhados</h3>
+                                <p class="text-gray-400 text-sm">Visualize itens cadastrados no mês atual e aqueles que saíram do estoque.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-4 rounded-lg bg-gray-800/50">
+                            <i class="fas fa-warehouse text-purple-400 text-lg mt-1 mr-4"></i>
+                            <div>
+                                <h3 class="font-semibold text-white mb-1">Controle de Estoque</h3>
+                                <p class="text-gray-400 text-sm">Monitore e atualize o status dos produtos facilmente.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-4 rounded-lg bg-gray-800/50">
+                            <i class="fas fa-file-pdf text-red-400 text-lg mt-1 mr-4"></i>
+                            <div>
+                                <h3 class="font-semibold text-white mb-1">Exportação de Dados</h3>
+                                <p class="text-gray-400 text-sm">Gere relatórios em PDF para análise externa.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-4 rounded-lg bg-gray-800/50">
+                            <i class="fas fa-search text-cyan-400 text-lg mt-1 mr-4"></i>
+                            <div>
+                                <h3 class="font-semibold text-white mb-1">Busca Avançada</h3>
+                                <p class="text-gray-400 text-sm">Encontre itens rapidamente com filtros por data, nome e condição.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-4 rounded-lg bg-gray-800/50">
+                            <i class="fas fa-mobile-alt text-pink-400 text-lg mt-1 mr-4"></i>
+                            <div>
+                                <h3 class="font-semibold text-white mb-1">Design Responsivo</h3>
+                                <p class="text-gray-400 text-sm">Acesse de qualquer dispositivo com interface adaptável.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seção Valores -->
+                <section class="glass-effect rounded-xl p-8 card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-star text-cyan-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold gradient-text">Nossos Valores</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center p-6 rounded-xl bg-gray-800/50">
+                            <div class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-lightbulb text-blue-400 text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-white mb-2">Inovação</h3>
+                            <p class="text-gray-400 text-sm">Buscamos sempre as melhores soluções tecnológicas para otimizar processos.</p>
+                        </div>
+                        <div class="text-center p-6 rounded-xl bg-gray-800/50">
+                            <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-handshake text-green-400 text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-white mb-2">Compromisso</h3>
+                            <p class="text-gray-400 text-sm">Dedicação total em entregar valor e qualidade para nossos usuários.</p>
+                        </div>
+                        <div class="text-center p-6 rounded-xl bg-gray-800/50">
+                            <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-shield-alt text-purple-400 text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-white mb-2">Confiança</h3>
+                            <p class="text-gray-400 text-sm">Segurança e privacidade dos dados como prioridade absoluta.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seção Missão e Visão -->
+                <section class="glass-effect rounded-xl p-8 card-hover">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center mr-3">
+                                    <i class="fas fa-bullseye text-blue-400"></i>
+                                </div>
+                                <h2 class="text-xl font-bold gradient-text">Nossa Missão</h2>
+                            </div>
+                            <p class="text-gray-300">
+                                Facilitar o gerenciamento de estoque para empresas de todos os tamanhos, promovendo eficiência, sustentabilidade e redução de desperdícios através de tecnologia acessível e intuitiva.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 bg-orange-500/20 rounded-lg flex items-center justify-center mr-3">
+                                    <i class="fas fa-eye text-orange-400"></i>
+                                </div>
+                                <h2 class="text-xl font-bold gradient-text">Nossa Visão</h2>
+                            </div>
+                            <p class="text-gray-300">
+                                Ser referência em soluções de gestão de estoque, reconhecida pela excelência no atendimento e pela capacidade de transformar desafios logísticos em oportunidades de crescimento.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seção Tecnologias -->
+                <section class="glass-effect rounded-xl p-8 card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-indigo-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-code text-indigo-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold gradient-text">Tecnologias Utilizadas</h2>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="text-center p-4 rounded-lg bg-gray-800/50">
+                            <i class="fab fa-html5 text-orange-400 text-2xl mb-2"></i>
+                            <p class="text-gray-400 text-sm">HTML5</p>
+                        </div>
+                        <div class="text-center p-4 rounded-lg bg-gray-800/50">
+                            <i class="fab fa-css3-alt text-blue-400 text-2xl mb-2"></i>
+                            <p class="text-gray-400 text-sm">CSS3</p>
+                        </div>
+                        <div class="text-center p-4 rounded-lg bg-gray-800/50">
+                            <i class="fab fa-js text-yellow-400 text-2xl mb-2"></i>
+                            <p class="text-gray-400 text-sm">JavaScript</p>
+                        </div>
+                        <div class="text-center p-4 rounded-lg bg-gray-800/50">
+                            <i class="fab fa-github text-gray-400 text-2xl mb-2"></i>
+                            <p class="text-gray-400 text-sm">GitHub</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seção Integrantes -->
+                <section class="glass-effect rounded-xl p-8 card-hover">
+                    <div class="flex items-center mb-8">
+                        <div class="w-12 h-12 bg-pink-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-users text-pink-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold gradient-text">Nossa Equipe</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="text-center p-6 rounded-xl bg-gray-800/50 card-hover">
+                            <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                <i class="fas fa-user text-white text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-white text-lg">Álvaro Gomes Fenerick</h3>
+                            <p class="text-gray-400 text-sm mt-2">Estudante de Análise e Desenvolvimento de Sistemas</p>
+                        </div>
+                        <div class="text-center p-6 rounded-xl bg-gray-800/50 card-hover">
+                            <div class="w-20 h-20 bg-gradient-to-r from-green-500 to-blue-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                <i class="fas fa-user text-white text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-white text-lg">Biank Henrique Gonçalves Lopes</h3>
+                            <p class="text-gray-400 text-sm mt-2">Estudante de Análise e Desenvolvimento de Sistemas</p>
+                        </div>
+                        <div class="text-center p-6 rounded-xl bg-gray-800/50 card-hover">
+                            <div class="w-20 h-20 bg-gradient-to-r from-orange-500 to-red-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                <i class="fas fa-user text-white text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-white text-lg">Felipe Rosendo da Silva</h3>
+                            <p class="text-gray-400 text-sm mt-2">Estudante de Análise e Desenvolvimento de Sistemas</p>
+                        </div>
+                        <div class="text-center p-6 rounded-xl bg-gray-800/50 card-hover">
+                            <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                <i class="fas fa-user text-white text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-white text-lg">Henrique Marques de Oliveira</h3>
+                            <p class="text-gray-400 text-sm mt-2">Estudante de Análise e Desenvolvimento de Sistemas</p>
+                        </div>
+                        <div class="text-center p-6 rounded-xl bg-gray-800/50 card-hover">
+                            <div class="w-20 h-20 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                <i class="fas fa-user text-white text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-white text-lg">Mateus Alves Moraes</h3>
+                            <p class="text-gray-400 text-sm mt-2">Estudante de Análise e Desenvolvimento de Sistemas</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seção Contato -->
+                <section class="glass-effect rounded-xl p-8 card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-envelope text-red-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold gradient-text">Contato</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <p class="text-lg text-gray-300 mb-4">
+                                Para mais informações ou suporte, entre em contato conosco:
+                            </p>
+                            <div class="space-y-3">
+                                <div class="flex items-center">
+                                    <i class="fas fa-envelope text-purple-400 mr-3"></i>
+                                    <a href="mailto:suporte@easystorage.com" class="text-purple-400 hover:text-purple-300 transition">
+                                        suporte@easystorage.com
+                                    </a>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-globe text-purple-400 mr-3"></i>
+                                    <span class="text-gray-300">www.easystorage.com</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-lg text-gray-300 mb-4">
+                                Nosso compromisso é com sua satisfação:
+                            </p>
+                            <ul class="text-gray-400 space-y-2">
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-400 mr-2 text-sm"></i>
+                                    Suporte técnico especializado
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-400 mr-2 text-sm"></i>
+                                    Atualizações constantes
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-400 mr-2 text-sm"></i>
+                                    Feedback sempre bem-vindo
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
     </div>
 
-    <!-- Conteúdo Principal -->
-    <div class="max-w-4xl mx-auto p-6 space-y-12">
+    <!-- Botão Toggle Sidebar (Mobile) -->
+    <button id="toggleSidebar" class="lg:hidden fixed bottom-4 right-4 bg-purple-600 text-white p-3 rounded-full shadow-lg z-50">
+        <i class="fas fa-bars"></i>
+    </button>
 
-        <!-- Seção Sobre Nós -->
-        <section class="bg-white shadow-lg rounded-2xl p-8">
-            <div class="flex items-center mb-4">
-                <svg class="w-8 h-8 text-indigo-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <h1 class="text-3xl font-bold text-indigo-700">Sobre Nós</h1>
-            </div>
-            <p class="text-lg text-gray-700">
-                Bem-vindo ao <strong>Easy Storage</strong>, o seu sistema de gerenciamento de estoque simplificado e eficiente. Desenvolvido para facilitar o controle de itens em qualquer tipo de negócio, desde pequenas lojas até grandes empresas. Nosso objetivo é oferecer uma solução intuitiva e acessível para cadastrar, editar, remover e relatar itens, garantindo que você tenha sempre o controle total sobre seu inventário.
-            </p>
-        </section>
+    <script>
+        // Toggle da Sidebar para Mobile
+        const sidebar = document.querySelector('aside');
+        const toggleButton = document.getElementById('toggleSidebar');
 
-        <!-- Seção Funcionalidades -->
-        <section class="bg-white shadow-lg rounded-2xl p-8">
-            <div class="flex items-center mb-4">
-                <svg class="w-8 h-8 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <h2 class="text-3xl font-bold text-green-600">Nossas Funcionalidades Principais</h2>
-            </div>
-            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
-                <li class="flex items-start">
-                    <svg class="w-6 h-6 text-blue-600 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                    </svg>
-                    <div>
-                        <strong>Gerenciamento de Itens:</strong> Cadastre novos itens com código, nome, descrição e condição.
-                    </div>
-                </li>
-                <li class="flex items-start">
-                    <svg class="w-6 h-6 text-orange-600 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                    </svg>
-                    <div>
-                        <strong>Relatórios Detalhados:</strong> Visualize itens cadastrados no mês atual e aqueles que saíram do estoque.
-                    </div>
-                </li>
-                <li class="flex items-start">
-                    <svg class="w-6 h-6 text-purple-600 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                    </svg>
-                    <div>
-                        <strong>Controle de Estoque:</strong> Monitore e atualize o status dos produtos facilmente.
-                    </div>
-                </li>
-                <li class="flex items-start">
-                    <svg class="w-6 h-6 text-red-600 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                    </svg>
-                    <div>
-                        <strong>Exportação de Dados:</strong> Gere relatórios em PDF para análise externa.
-                    </div>
-                </li>
-                <li class="flex items-start md:col-span-2">
-                    <svg class="w-6 h-6 text-indigo-600 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                    </svg>
-                    <div>
-                        <strong>Interface Amigável:</strong> Design moderno e responsivo, acessível em dispositivos móveis e desktop.
-                    </div>
-                </li>
-            </ul>
-        </section>
+        toggleButton.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+        });
 
-        <!-- Seção Missão -->
-        <section class="bg-white shadow-lg rounded-2xl p-8">
-            <div class="flex items-center mb-4">
-                <svg class="w-8 h-8 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <h2 class="text-3xl font-bold text-blue-600">Nossa Missão</h2>
-            </div>
-            <p class="text-lg text-gray-700">
-                Facilitar o gerenciamento de estoque para empresas de todos os tamanhos, promovendo eficiência, sustentabilidade e redução de desperdícios através de tecnologia acessível.
-            </p>
-        </section>
-
-        <!-- Seção Integrantes -->
-        <section class="bg-white shadow-lg rounded-2xl p-8">
-            <div class="flex items-center mb-6">
-                <svg class="w-8 h-8 text-purple-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                </svg>
-                <h2 class="text-3xl font-bold text-purple-600">Integrantes do Grupo</h2>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="text-center">
-                    <img src="https://media.istockphoto.com/id/1142192548/vector/man-avatar-profile-male-face-silhouette-or-icon-isolated-on-white-background-vector.webp?b=1&s=612x612&w=0&k=20&c=QSm6m0T5krg7AuimoQ2Kc7jVQsZhFwOCMp2aJTDYBBE=" alt="Álvaro Gomes Fenerick" class="w-24 h-24 rounded-full mx-auto mb-2 object-cover">
-                    <p class="font-semibold text-gray-800">Álvaro Gomes Fenerick</p>
-                </div>
-                <div class="text-center">
-                    <img src="https://media.istockphoto.com/id/1142192548/vector/man-avatar-profile-male-face-silhouette-or-icon-isolated-on-white-background-vector.webp?b=1&s=612x612&w=0&k=20&c=QSm6m0T5krg7AuimoQ2Kc7jVQsZhFwOCMp2aJTDYBBE=" alt="Biank Henrique Gonçalves Lopes" class="w-24 h-24 rounded-full mx-auto mb-2 object-cover">
-                    <p class="font-semibold text-gray-800">Biank Henrique Gonçalves Lopes</p>
-                </div>
-                <div class="text-center">
-                    <img src="https://media.istockphoto.com/id/1142192548/vector/man-avatar-profile-male-face-silhouette-or-icon-isolated-on-white-background-vector.webp?b=1&s=612x612&w=0&k=20&c=QSm6m0T5krg7AuimoQ2Kc7jVQsZhFwOCMp2aJTDYBBE=" alt="Felipe Rosendo da Silva" class="w-24 h-24 rounded-full mx-auto mb-2 object-cover">
-                    <p class="font-semibold text-gray-800">Felipe Rosendo da Silva</p>
-                </div>
-                <div class="text-center">
-                    <img src="https://media.istockphoto.com/id/1142192548/vector/man-avatar-profile-male-face-silhouette-or-icon-isolated-on-white-background-vector.webp?b=1&s=612x612&w=0&k=20&c=QSm6m0T5krg7AuimoQ2Kc7jVQsZhFwOCMp2aJTDYBBE=" alt="Henrique Marques de Oliveira" class="w-24 h-24 rounded-full mx-auto mb-2 object-cover">
-                    <p class="font-semibold text-gray-800">Henrique Marques de Oliveira</p>
-                </div>
-                <div class="text-center md:col-span-2 lg:col-span-1">
-                    <img src="https://media.istockphoto.com/id/1142192548/vector/man-avatar-profile-male-face-silhouette-or-icon-isolated-on-white-background-vector.webp?b=1&s=612x612&w=0&k=20&c=QSm6m0T5krg7AuimoQ2Kc7jVQsZhFwOCMp2aJTDYBBE=" alt="Mateus Alves Moraes" class="w-24 h-24 rounded-full mx-auto mb-2 object-cover">
-                    <p class="font-semibold text-gray-800">Mateus Alves Moraes</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Seção Contato -->
-        <section class="bg-white shadow-lg rounded-2xl p-8">
-            <div class="flex items-center mb-4">
-                <svg class="w-8 h-8 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                </svg>
-                <h2 class="text-3xl font-bold text-red-600">Contato</h2>
-            </div>
-            <p class="text-lg text-gray-700">
-                Para mais informações ou suporte, entre em contato conosco via email: <a href="mailto:suporte@easystorage.com" class="text-indigo-600 hover:underline">suporte@easystorage.com</a>.
-            </p>
-        </section>
-
-    </div>
+        // Adicionar classe active ao item do menu atual
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuItems = document.querySelectorAll('.sidebar-item');
+            
+            menuItems.forEach(item => {
+                if (item.getAttribute('href') === 'sobre.html') {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
