@@ -1,272 +1,267 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciador - Easy Storage</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .gradient-text {
-            background: linear-gradient(to right, #8b5cf6, #3b82f6, #10b981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .sidebar-item {
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
-        }
-        
-        .sidebar-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-left-color: #8b5cf6;
-        }
-        
-        .sidebar-item.active {
-            background: rgba(139, 92, 246, 0.2);
-            border-left-color: #8b5cf6;
-        }
-        
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.2);
-        }
-        
-        .dropdown-menu {
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: scale(0.95);
-            pointer-events: none;
-        }
-        
-        .dropdown-menu.show {
-            opacity: 1;
-            transform: scale(1);
-            pointer-events: all;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerenciador - Easy Storage</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body{
+    font-family:'Poppins',sans-serif;
+}
+
+.glass-effect{
+    background:rgba(255,255,255,.05);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.gradient-text{
+    background:linear-gradient(to right,#8b5cf6,#3b82f6,#10b981);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.sidebar-item{
+    transition:.3s;
+    border-left:3px solid transparent;
+}
+
+.sidebar-item:hover{
+    background:rgba(255,255,255,.1);
+    border-left-color:#8b5cf6;
+}
+
+.sidebar-item.active{
+    background:rgba(139,92,246,.2);
+    border-left-color:#8b5cf6;
+}
+
+.card-hover{
+    transition:.3s;
+}
+
+.card-hover:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 25px -5px rgba(0,0,0,.2);
+}
+
+#sidebarOverlay{display:none;}
+#sidebarOverlay.show{display:block;}
+</style>
 </head>
-<body class="bg-gray-900 min-h-screen text-white">
 
-    <!-- Layout Principal -->
-    <div class="flex">
-        <!-- Sidebar -->
-        <aside class="glass-effect w-64 min-h-screen p-6 z-40">
-            <!-- Logo -->
-            <div class="flex items-center mb-10">
-                <div class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-500 rounded-lg flex items-center justify-center mr-3">
-                    <i class="fas fa-boxes text-white"></i>
-                </div>
-                <h1 class="text-xl font-bold gradient-text">Easy Storage</h1>
-            </div>
+<body id="bodyTema" class="min-h-screen relative overflow-x-hidden bg-white text-gray-900">
 
-            <!-- Menu de Navegação -->
-            <nav class="space-y-2">
-                <a href="dashboard.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
-                    <i class="fas fa-tachometer-alt mr-3 text-purple-400"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="lucros.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
-                    <i class="fas fa-chart-line mr-3 text-green-400"></i>
-                    <span>Gestão de Lucros</span>
-                </a>
-                <a href="gerenciador.html" class="sidebar-item active flex items-center py-3 px-4 rounded-lg">
-                    <i class="fas fa-boxes mr-3 text-blue-400"></i>
-                    <span>Gerenciador</span>
-                </a>
-                <a href="estoque.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
-                    <i class="fas fa-warehouse mr-3 text-green-400"></i>
-                    <span>Estoque</span>
-                </a>
-                <a href="relatorios.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
-                    <i class="fas fa-chart-bar mr-3 text-yellow-400"></i>
-                    <span>Relatórios</span>
-                </a>
-                <a href="sobre.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
-                    <i class="fas fa-info-circle mr-3 text-indigo-400"></i>
-                    <span>Sobre Nós</span>
-                </a>
-            </nav>
+<!-- Overlay -->
+<div id="sidebarOverlay"
+     class="fixed inset-0 bg-black bg-opacity-60 z-30 lg:hidden"
+     onclick="fecharSidebar()"></div>
 
-            <!-- Sair -->
-            <div class="mt-auto pt-10">
-                <a href="login.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg text-red-400">
-                    <i class="fas fa-sign-out-alt mr-3"></i>
-                    <span>Sair</span>
-                </a>
-            </div>
-        </aside>
+<div class="flex">
 
-        <!-- Conteúdo Principal -->
-        <main class="flex-1 p-8">
-            <!-- Header -->
-            <header class="flex justify-between items-center mb-8">
-                <div>
-                    <h1 class="text-3xl font-bold gradient-text">Gerenciador de Itens</h1>
-                    <p class="text-gray-400">Adicione, edite e gerencie os itens do seu estoque</p>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <a href="usuario.html" class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center hover:shadow-lg transition-shadow">
-                        <i class="fas fa-user text-white"></i>
-                    </a>
-                </div>
-            </header>
+<!-- Sidebar -->
+<aside id="sidebar"
+class="flex flex-col glass-effect w-64 min-h-screen p-6 z-40 fixed top-0 left-0 h-full -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:relative lg:h-auto">
 
-            <!-- Conteúdo -->
-            <div class="max-w-7xl mx-auto space-y-8">
-                <!-- Formulário de Adição -->
-                <section class="glass-effect rounded-xl p-6 card-hover">
-                    <h2 class="text-xl font-bold mb-4 gradient-text">Adicionar Novo Item</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-gray-400 text-sm mb-2">Código do Item</label>
-                            <input type="text" id="codigo" placeholder="Digite o código"
-                                   class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 text-sm mb-2">Nome do Item</label>
-                            <input type="text" id="nome" placeholder="Digite o nome"
-                                   class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500">
-                        </div>
-                        <div class="md:col-span-2">
-                            <label class="block text-gray-400 text-sm mb-2">Descrição</label>
-                            <textarea id="descricao" placeholder="Descreva o item"
-                                      class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 h-24 focus:outline-none focus:border-purple-500"></textarea>
-                        </div>
-                        <div class="md:col-span-2">
-                            <label class="block text-gray-400 text-sm mb-2">Condição</label>
-                            <select id="condicao" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500">
-                                <option value="">Selecione a condição</option>
-                                <option value="bom">Bom</option>
-                                <option value="medio">Médio</option>
-                                <option value="ruim">Ruim</option>
-                            </select>
-                        </div>
-                        <div class="md:col-span-2">
-                            <button id="btnSalvar" onclick="salvarItem()" 
-                                    class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-8 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:-translate-y-1 shadow-lg">
-                                <i class="fas fa-save mr-2"></i>Salvar Item
-                            </button>
-                        </div>
-                    </div>
-                </section>
+<div class="flex items-center mb-10">
+<div class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-500 rounded-lg flex items-center justify-center mr-3">
+<i class="fas fa-boxes text-white"></i>
+</div>
+<h1 class="text-xl font-bold gradient-text">Easy Storage</h1>
+</div>
 
-                <!-- Lista de Itens -->
-                <section class="glass-effect rounded-xl p-6 card-hover">
-                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
-                        <h2 class="text-xl font-bold gradient-text">Itens Cadastrados</h2>
-                        
-                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                            <!-- Contador de Itens -->
-                            <span id="contadorItens" class="bg-gray-800 px-3 py-2 rounded-lg text-sm text-gray-400 whitespace-nowrap">
-                                <i class="fas fa-box mr-2"></i><span id="contadorNumero">0</span> itens
-                            </span>
-                            
-                            <!-- Filtro por Data -->
-                            <div class="flex flex-col sm:flex-row gap-2">
-                                <input type="date" id="filtroDataInicio" onchange="filtrarItens()" 
-                                       class="bg-gray-800 text-white border border-gray-700 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 text-sm">
-                                <input type="date" id="filtroDataFim" onchange="filtrarItens()" 
-                                       class="bg-gray-800 text-white border border-gray-700 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500 text-sm">
-                                <button onclick="limparFiltros()" 
-                                        class="bg-gray-700 text-gray-300 px-3 py-2 rounded-lg hover:bg-gray-600 transition text-sm whitespace-nowrap">
-                                    <i class="fas fa-times mr-1"></i>Limpar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+<nav class="space-y-2">
+<a href="dashboard.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+<i class="fas fa-tachometer-alt mr-3 text-purple-400"></i>Dashboard
+</a>
 
-                    <div class="overflow-x-auto">
-                        <table class="w-full" id="tabelaItens">
-                            <thead>
-                                <tr class="border-b border-gray-700">
-                                    <th class="py-4 px-4 text-left text-gray-400 font-medium">Código</th>
-                                    <th class="py-4 px-4 text-left text-gray-400 font-medium">Nome</th>
-                                    <th class="py-4 px-4 text-left text-gray-400 font-medium">Descrição</th>
-                                    <th class="py-4 px-4 text-left text-gray-400 font-medium">Condição</th>
-                                    <th class="py-4 px-4 text-left text-gray-400 font-medium">Data</th>
-                                    <th class="py-4 px-4 text-left text-gray-400 font-medium">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabelaItensBody" class="divide-y divide-gray-700">
-                                <!-- Itens serão adicionados aqui pelo JS -->
-                            </tbody>
-                        </table>
-                    </div>
+<a href="lucros.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+<i class="fas fa-chart-line mr-3 text-green-400"></i>Gestão de Lucros
+</a>
 
-                    <!-- Mensagem de lista vazia -->
-                    <div id="listaVazia" class="hidden text-center py-12">
-                        <div class="w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-inbox text-gray-400 text-2xl"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-400 mb-2">Nenhum item cadastrado</h3>
-                        <p class="text-gray-500">Comece adicionando seu primeiro item acima</p>
-                    </div>
+<a href="gerenciador.html" class="sidebar-item active flex items-center py-3 px-4 rounded-lg">
+<i class="fas fa-boxes mr-3 text-blue-400"></i>Gerenciador
+</a>
 
-                    <!-- Mensagem de nenhum resultado -->
-                    <div id="nenhumResultado" class="hidden text-center py-12">
-                        <div class="w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-search text-gray-400 text-2xl"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-400 mb-2">Nenhum item encontrado</h3>
-                        <p class="text-gray-500">Tente ajustar os filtros de data</p>
-                    </div>
-                </section>
-            </div>
-        </main>
-    </div>
+<a href="estoque.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+<i class="fas fa-warehouse mr-3 text-green-400"></i>Estoque
+</a>
 
-    <!-- Toast de Notificação -->
-    <div id="toast" class="hidden fixed top-4 right-4 z-50 glass-effect rounded-lg shadow-lg p-4 max-w-sm w-full mx-4 transition-all duration-300 opacity-0 transform translate-x-full">
-        <div id="toastConteudo" class="flex items-center">
-            <!-- Ícone e mensagem dinâmicos -->
-        </div>
-    </div>
+<a href="relatorios.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+<i class="fas fa-chart-bar mr-3 text-yellow-400"></i>Relatórios
+</a>
 
-    <!-- Modal de Confirmação -->
-    <div id="modalConfirmacao" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div class="glass-effect rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl">
-            <div class="flex items-center mb-4">
-                <div class="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center mr-3">
-                    <i class="fas fa-exclamation-triangle text-red-400"></i>
-                </div>
-                <h3 class="text-xl font-bold gradient-text">Confirmação</h3>
-            </div>
-            <p id="modalMensagem" class="mb-6 text-gray-300 leading-relaxed"></p>
-            <div class="flex justify-end space-x-3">
-                <button id="btnCancelar" class="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition">
-                    Cancelar
-                </button>
-                <button id="btnConfirmar" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
-                    Confirmar
-                </button>
-            </div>
-        </div>
-    </div>
+<a href="sobre.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg">
+<i class="fas fa-info-circle mr-3 text-indigo-400"></i>Sobre Nós
+</a>
+</nav>
 
-    <!-- Botão Toggle Sidebar (Mobile) -->
-    <button id="toggleSidebar" class="lg:hidden fixed bottom-4 right-4 bg-purple-600 text-white p-3 rounded-full shadow-lg z-50">
-        <i class="fas fa-bars"></i>
+<div class="mt-auto pt-10">
+<a href="login.html" class="sidebar-item flex items-center py-3 px-4 rounded-lg text-red-400">
+<i class="fas fa-sign-out-alt mr-3"></i>Sair
+</a>
+</div>
+
+</aside>
+
+<!-- Main -->
+<main class="flex-1 p-8 w-full">
+
+<header class="flex justify-between items-center mb-8">
+
+  <div class="flex items-center gap-4">
+    <button id="toggleSidebar" class="lg:hidden text-gray-400 hover:text-white">
+      <i class="fas fa-bars text-xl"></i>
     </button>
+    <div>
+      <h1 class="text-3xl font-bold gradient-text">Gerenciador de Itens</h1>
+      <p class="text-gray-400">Adicione, edite e gerencie os itens do estoque</p>
+    </div>
+  </div>
 
-    <!-- Script -->
-    <script src="../js/gerenciador.js"></script>
+  <div class="flex items-center gap-3">
+    <button id="btnTema" class="btn-back">Dark Mode</button>
+    <a href="usuario.html"
+       class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+      <i class="fas fa-user text-white"></i>
+    </a>
+  </div>
+
+</header>
+
+<div class="max-w-7xl mx-auto space-y-8">
+
+<!-- FORM -->
+<section class="glass-effect rounded-xl p-6 card-hover">
+
+<h2 class="text-xl font-bold mb-4 gradient-text">Adicionar Novo Item</h2>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+<div>
+<label class="block text-gray-400 text-sm mb-2">Código</label>
+<input id="codigo" type="text"
+class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3">
+</div>
+
+<div>
+<label class="block text-gray-400 text-sm mb-2">Nome</label>
+<input id="nome" type="text"
+class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3">
+</div>
+
+<div class="md:col-span-2">
+<label class="block text-gray-400 text-sm mb-2">Descrição</label>
+<textarea id="descricao"
+class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 h-24"></textarea>
+</div>
+
+<div class="md:col-span-2">
+<label class="block text-gray-400 text-sm mb-2">Condição</label>
+<select id="condicao"
+class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3">
+<option value="">Selecione</option>
+<option value="bom">Bom</option>
+<option value="medio">Médio</option>
+<option value="ruim">Ruim</option>
+</select>
+</div>
+
+<div class="md:col-span-2">
+<button onclick="salvarItem()"
+class="bg-gradient-to-r from-blue-600 to-purple-600 py-3 px-8 rounded-lg">
+<i class="fas fa-save mr-2"></i>Salvar
+</button>
+
+<button onclick="limparFormulario()"
+class="ml-3 bg-gray-700 py-3 px-6 rounded-lg">
+Cancelar
+</button>
+</div>
+
+</div>
+</section>
+
+<!-- LISTA -->
+<section class="glass-effect rounded-xl p-6 card-hover">
+
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-xl font-bold gradient-text">Itens Cadastrados</h2>
+
+<span id="contadorItens"
+class="bg-gray-800 px-3 py-2 rounded-lg text-sm text-gray-400">
+<i class="fas fa-box mr-2"></i>
+<span id="contadorNumero">0</span> itens
+</span>
+</div>
+
+<div class="overflow-x-auto">
+
+<table class="w-full">
+
+<thead>
+<tr class="border-b border-gray-700">
+<th class="py-4 px-4 text-left">Código</th>
+<th class="py-4 px-4 text-left">Nome</th>
+<th class="py-4 px-4 text-left">Descrição</th>
+<th class="py-4 px-4 text-left">Condição</th>
+<th class="py-4 px-4 text-left">Data</th>
+<th class="py-4 px-4 text-left">Ações</th>
+</tr>
+</thead>
+
+<tbody id="tabelaItensBody" class="divide-y divide-gray-700"></tbody>
+
+</table>
+
+</div>
+
+<div id="listaVazia" class="hidden text-center py-10 text-gray-400">
+Nenhum item cadastrado
+</div>
+
+<div id="nenhumResultado" class="hidden text-center py-10 text-yellow-400">
+Nenhum item encontrado
+</div>
+
+</section>
+
+</div>
+
+</main>
+</div>
+<script src="../backend/theme.js"></script>
+<!-- JS BACKEND -->
+<script src="../backend/gerenciador.js"></script>
+
+<!-- Sidebar -->
+<script>
+function abrirSidebar(){
+    document.getElementById('sidebar').classList.remove('-translate-x-full');
+    document.getElementById('sidebarOverlay').classList.add('show');
+}
+
+function fecharSidebar(){
+    document.getElementById('sidebar').classList.add('-translate-x-full');
+    document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+document.getElementById('toggleSidebar').addEventListener('click',()=>{
+    const side = document.getElementById('sidebar');
+
+    if(side.classList.contains('-translate-x-full')){
+        abrirSidebar();
+    }else{
+        fecharSidebar();
+    }
+});
+</script>
+
 </body>
 </html>

@@ -418,3 +418,32 @@ window.onload = () => {
   custoReparo.addEventListener('input', calcularPreviewLucro);
   selectItem.addEventListener('change', carregarDadosItem);
 };
+
+
+
+async function carregarItensSelect() {
+    try {
+        const response = await fetch('/api/item');
+        const itens = await response.json();
+
+        const select = document.getElementById('selectItem');
+
+        // limpa opções antigas
+        select.innerHTML = '<option value="">Selecione um item...</option>';
+
+        itens.forEach(item => {
+            const option = document.createElement('option');
+
+            option.value = item.id_item; // valor enviado
+            option.textContent = item.nome_item; // nome exibido
+
+            select.appendChild(option);
+        });
+
+    } catch (error) {
+        console.error('Erro ao carregar itens:', error);
+    }
+}
+
+// carregar ao abrir página
+document.addEventListener('DOMContentLoaded', carregarItensSelect);

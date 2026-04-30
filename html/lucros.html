@@ -64,7 +64,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-900 min-h-screen text-white">
+<body id="bodyTema" class="min-h-screen relative overflow-x-hidden bg-white text-gray-900">
 
     <!-- Layout Principal -->
     <div class="flex">
@@ -124,6 +124,7 @@
                     <p class="text-gray-400">Controle de custos, receitas e lucratividade dos itens</p>
                 </div>
                 <div class="flex items-center space-x-4">
+                    <button id="btnTema" class="btn-back">Dark Mode</button>
                     <a href="usuario.html" class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center hover:shadow-lg transition-shadow">
                         <i class="fas fa-user text-white"></i>
                     </a>
@@ -164,18 +165,18 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- Formulário de Gestão de Lucros -->
                     <section class="glass-effect rounded-xl p-6 card-hover">
                         <h2 class="text-xl font-bold gradient-text mb-6">Configurar Lucro por Item</h2>
-                        
+                    
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-gray-400 text-sm mb-2">Selecionar Item</label>
-                                <select id="selectItem" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500">
+                                <select id="selectItem"
+                                    class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500">
                                     <option value="">Selecione um item...</option>
                                 </select>
                             </div>
+                        </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -314,6 +315,7 @@
     </button>
 
     <!-- Script -->
-    <script src="../js/lucros.js"></script>
+    <script src="../backend/theme.js"></script>     
+    <script src="../backend/lucros.js"></script>
 </body>
 </html>

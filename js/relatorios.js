@@ -88,42 +88,53 @@ function configurarFiltrosData() {
 }
 
 // Funções de filtro - Itens Cadastrados
-function filtrarRelatorioMes() {
+async function filtrarRelatorioMes() {
   const nomeFiltro = filtroNomeMes.value.toLowerCase();
   const condicaoFiltro = filtroCondicaoMes.value;
   const dataInicio = filtroDataInicioMes.value;
   const dataFim = filtroDataFimMes.value;
-  
-  let itens = JSON.parse(localStorage.getItem("itens")) || [];
-  
-  itensFiltradosMes = itens.filter(item => {
-    // Filtro por nome
-    const nomeMatch = !nomeFiltro || 
-                     item.nome.toLowerCase().includes(nomeFiltro) || 
-                     item.codigo.toLowerCase().includes(nomeFiltro);
-    
-    // Filtro por condição
-    const condicaoMatch = condicaoFiltro === 'todos' || item.condicao === condicaoFiltro;
-    
-    // Filtro por data
-    let dataMatch = true;
-    if (dataInicio) {
-      const itemData = new Date(item.data);
-      const inicioData = new Date(dataInicio);
-      dataMatch = dataMatch && itemData >= inicioData;
+
+  try {
+    const response = await fetch('http://localhost:3001/api/relatorio/itens-mes');
+    const itens = await response.json();
+
+    if (!response.ok) {
+      mostrarToast('Erro ao carregar itens do mês', 'erro');
+      return;
     }
-    if (dataFim) {
-      const itemData = new Date(item.data);
-      const fimData = new Date(dataFim);
-      fimData.setHours(23, 59, 59, 999);
-      dataMatch = dataMatch && itemData <= fimData;
-    }
-    
-    return nomeMatch && condicaoMatch && dataMatch;
-  });
-  
-  atualizarRelatorioMes();
-  mostrarToast(`Filtro aplicado: ${itensFiltradosMes.length} itens encontrados`);
+
+    itensFiltradosMes = itens.filter(item => {
+      // Filtro por nome
+      const nomeMatch = !nomeFiltro ||
+                       item.nome.toLowerCase().includes(nomeFiltro) ||
+                       item.codigo.toLowerCase().includes(nomeFiltro);
+
+      // Filtro por condição
+      const condicaoMatch = condicaoFiltro === 'todos' || item.condicao === condicaoFiltro;
+
+      // Filtro por data
+      let dataMatch = true;
+      if (dataInicio) {
+        const itemData = new Date(item.data_entrada);
+        const inicioData = new Date(dataInicio);
+        dataMatch = dataMatch && itemData >= inicioData;
+      }
+      if (dataFim) {
+        const itemData = new Date(item.data_entrada);
+        const fimData = new Date(dataFim);
+        fimData.setHours(23, 59, 59, 999);
+        dataMatch = dataMatch && itemData <= fimData;
+      }
+
+      return nomeMatch && condicaoMatch && dataMatch;
+    });
+
+    atualizarRelatorioMes();
+    mostrarToast(`Filtro aplicado: ${itensFiltradosMes.length} itens encontrados`);
+  } catch (error) {
+    console.error('Erro ao filtrar relatório do mês:', error);
+    mostrarToast('Erro ao conectar com o servidor', 'erro');
+  }
 }
 
 function limparFiltrosMes() {
@@ -137,42 +148,53 @@ function limparFiltrosMes() {
 }
 
 // Funções de filtro - Itens Removidos
-function filtrarRelatorioSaida() {
+async function filtrarRelatorioSaida() {
   const nomeFiltro = filtroNomeSaida.value.toLowerCase();
   const condicaoFiltro = filtroCondicaoSaida.value;
   const dataInicio = filtroDataInicioSaida.value;
   const dataFim = filtroDataFimSaida.value;
-  
-  let removidos = JSON.parse(localStorage.getItem("removidos")) || [];
-  
-  itensFiltradosSaida = removidos.filter(item => {
-    // Filtro por nome
-    const nomeMatch = !nomeFiltro || 
-                     item.nome.toLowerCase().includes(nomeFiltro) || 
-                     item.codigo.toLowerCase().includes(nomeFiltro);
-    
-    // Filtro por condição
-    const condicaoMatch = condicaoFiltro === 'todos' || item.condicao === condicaoFiltro;
-    
-    // Filtro por data de saída
-    let dataMatch = true;
-    if (dataInicio) {
-      const itemData = new Date(item.dataSaida);
-      const inicioData = new Date(dataInicio);
-      dataMatch = dataMatch && itemData >= inicioData;
+
+  try {
+    const response = await fetch('http://localhost:3001/api/relatorio/saidas');
+    const removidos = await response.json();
+
+    if (!response.ok) {
+      mostrarToast('Erro ao carregar itens removidos', 'erro');
+      return;
     }
-    if (dataFim) {
-      const itemData = new Date(item.dataSaida);
-      const fimData = new Date(dataFim);
-      fimData.setHours(23, 59, 59, 999);
-      dataMatch = dataMatch && itemData <= fimData;
-    }
-    
-    return nomeMatch && condicaoMatch && dataMatch;
-  });
-  
-  atualizarRelatorioSaida();
-  mostrarToast(`Filtro aplicado: ${itensFiltradosSaida.length} itens encontrados`);
+
+    itensFiltradosSaida = removidos.filter(item => {
+      // Filtro por nome
+      const nomeMatch = !nomeFiltro ||
+                       item.nome.toLowerCase().includes(nomeFiltro) ||
+                       item.codigo.toLowerCase().includes(nomeFiltro);
+
+      // Filtro por condição
+      const condicaoMatch = condicaoFiltro === 'todos' || item.condicao === condicaoFiltro;
+
+      // Filtro por data de saída
+      let dataMatch = true;
+      if (dataInicio) {
+        const itemData = new Date(item.data_saida);
+        const inicioData = new Date(dataInicio);
+        dataMatch = dataMatch && itemData >= inicioData;
+      }
+      if (dataFim) {
+        const itemData = new Date(item.data_saida);
+        const fimData = new Date(dataFim);
+        fimData.setHours(23, 59, 59, 999);
+        dataMatch = dataMatch && itemData <= fimData;
+      }
+
+      return nomeMatch && condicaoMatch && dataMatch;
+    });
+
+    atualizarRelatorioSaida();
+    mostrarToast(`Filtro aplicado: ${itensFiltradosSaida.length} itens encontrados`);
+  } catch (error) {
+    console.error('Erro ao filtrar relatório de saídas:', error);
+    mostrarToast('Erro ao conectar com o servidor', 'erro');
+  }
 }
 
 function limparFiltrosSaida() {
@@ -209,12 +231,11 @@ window.onload = () => {
 };
 
 function atualizarRelatorioMes() {
-  let itens = JSON.parse(localStorage.getItem("itens")) || [];
   const tbody = document.querySelector("#tabelaRelatorioMes tbody");
   tbody.innerHTML = "";
 
   // Usar itens filtrados se houver filtro ativo, senão todos os itens
-  const itensParaExibir = itensFiltradosMes.length > 0 ? itensFiltradosMes : itens;
+  const itensParaExibir = itensFiltradosMes.length > 0 ? itensFiltradosMes : [];
 
   if (itensParaExibir.length === 0) {
     tbody.classList.add('hidden');
@@ -225,9 +246,7 @@ function atualizarRelatorioMes() {
   tbody.classList.remove('hidden');
   listaVaziaMes.classList.add('hidden');
 
-  itensParaExibir.forEach((item, indexOriginal) => {
-    // Encontrar o índice original no array completo
-    const indexCompleto = itens.findIndex(i => i.codigo === item.codigo && i.data === item.data);
+  itensParaExibir.forEach((item) => {
     const tr = document.createElement("tr");
     tr.className = 'hover:bg-gray-800/50 transition-colors';
 
@@ -235,7 +254,7 @@ function atualizarRelatorioMes() {
     let condicaoTexto = '';
     let corBadge = '';
     let iconeBadge = '';
-    
+
     switch (item.condicao) {
       case 'bom':
         condicaoTexto = 'Bom';
@@ -272,10 +291,10 @@ function atualizarRelatorioMes() {
         </span>
       </td>
       <td class="py-4 px-4 text-gray-400 text-sm">
-        ${new Date(item.data).toLocaleDateString('pt-BR')}
+        ${new Date(item.data_entrada).toLocaleDateString('pt-BR')}
       </td>
       <td class="py-4 px-4">
-        <button onclick="editarItemMes(${indexCompleto})" 
+        <button onclick="editarItemMes(${item.id_item})"
                 class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 transition">
           <i class="fas fa-edit mr-1"></i>Editar
         </button>
@@ -287,12 +306,11 @@ function atualizarRelatorioMes() {
 }
 
 function atualizarRelatorioSaida() {
-  let removidos = JSON.parse(localStorage.getItem("removidos")) || [];
   const tbody = document.querySelector("#tabelaRelatorioSaida tbody");
   tbody.innerHTML = "";
 
   // Usar itens filtrados se houver filtro ativo, senão todos os itens
-  const itensParaExibir = itensFiltradosSaida.length > 0 ? itensFiltradosSaida : removidos;
+  const itensParaExibir = itensFiltradosSaida.length > 0 ? itensFiltradosSaida : [];
 
   if (itensParaExibir.length === 0) {
     tbody.classList.add('hidden');
@@ -303,9 +321,7 @@ function atualizarRelatorioSaida() {
   tbody.classList.remove('hidden');
   listaVaziaSaida.classList.add('hidden');
 
-  itensParaExibir.forEach((item, indexOriginal) => {
-    // Encontrar o índice original no array completo
-    const indexCompleto = removidos.findIndex(i => i.codigo === item.codigo && i.dataSaida === item.dataSaida);
+  itensParaExibir.forEach((item) => {
     const tr = document.createElement("tr");
     tr.className = 'hover:bg-gray-800/50 transition-colors';
 
@@ -313,7 +329,7 @@ function atualizarRelatorioSaida() {
     let condicaoTexto = '';
     let corBadge = '';
     let iconeBadge = '';
-    
+
     switch (item.condicao) {
       case 'bom':
         condicaoTexto = 'Bom';
@@ -350,10 +366,10 @@ function atualizarRelatorioSaida() {
         </span>
       </td>
       <td class="py-4 px-4 text-gray-400 text-sm">
-        ${new Date(item.dataSaida).toLocaleDateString('pt-BR')}
+        ${new Date(item.data_saida).toLocaleDateString('pt-BR')}
       </td>
       <td class="py-4 px-4">
-        <button onclick="restaurarItemSaida(${indexCompleto})" 
+        <button onclick="restaurarItemSaida('${item.id_item}')"
                 class="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700 transition">
           <i class="fas fa-undo mr-1"></i>Restaurar
         </button>
@@ -429,83 +445,48 @@ function excluirItemSaida(index) {
 }
 
 // Funções de exportação PDF
-function exportarPDFMes() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-
-  let itens = itensFiltradosMes.length > 0 ? itensFiltradosMes : JSON.parse(localStorage.getItem("itens")) || [];
-
-  // Título
-  doc.setFontSize(16);
-  doc.text('Relatório: Itens Cadastrados', 14, 20);
-  doc.setFontSize(10);
-  doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 30);
-
-  if (itens.length === 0) {
-    doc.text('Nenhum item encontrado.', 14, 45);
-  } else {
-    const cabecalhos = [['Código', 'Nome', 'Descrição', 'Condição', 'Data']];
-    const corpo = itens.map(item => {
-      let condicaoTexto = '';
-      switch (item.condicao) {
-        case 'bom': condicaoTexto = 'Bom'; break;
-        case 'medio': condicaoTexto = 'Médio'; break;
-        case 'ruim': condicaoTexto = 'Ruim'; break;
-        default: condicaoTexto = ''; break;
-      }
-      return [item.codigo, item.nome, item.descricao, condicaoTexto, new Date(item.data).toLocaleDateString('pt-BR')];
-    });
-
-    doc.autoTable({
-      head: cabecalhos,
-      body: corpo,
-      startY: 40,
-      theme: 'grid',
-      headStyles: { fillColor: [99, 102, 241] },
-      styles: { fontSize: 8, cellPadding: 3 },
-      margin: { left: 14, right: 14 }
-    });
+async function exportarPDFMes() {
+  try {
+    const response = await fetch('http://localhost:3001/api/relatorio/exportar/itens');
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `relatorio-itens-${new Date().toISOString().split('T')[0]}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      mostrarToast('PDF exportado com sucesso!');
+    } else {
+      mostrarToast('Erro ao exportar PDF', 'erro');
+    }
+  } catch (error) {
+    console.error('Erro ao exportar PDF:', error);
+    mostrarToast('Erro ao conectar com o servidor', 'erro');
   }
-
-  doc.save(`relatorio-itens-${new Date().toISOString().split('T')[0]}.pdf`);
 }
 
-function exportarPDFSaida() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-
-  let removidos = itensFiltradosSaida.length > 0 ? itensFiltradosSaida : JSON.parse(localStorage.getItem("removidos")) || [];
-
-  doc.setFontSize(16);
-  doc.text('Relatório: Itens Removidos', 14, 20);
-  doc.setFontSize(10);
-  doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 30);
-
-  if (removidos.length === 0) {
-    doc.text('Nenhum item removido encontrado.', 14, 45);
-  } else {
-    const cabecalhos = [['Código', 'Nome', 'Descrição', 'Condição', 'Data Saída']];
-    const corpo = removidos.map(item => {
-      let condicaoTexto = '';
-      switch (item.condicao) {
-        case 'bom': condicaoTexto = 'Bom'; break;
-        case 'medio': condicaoTexto = 'Médio'; break;
-        case 'ruim': condicaoTexto = 'Ruim'; break;
-        default: condicaoTexto = ''; break;
-      }
-      return [item.codigo, item.nome, item.descricao, condicaoTexto, new Date(item.dataSaida).toLocaleDateString('pt-BR')];
-    });
-
-    doc.autoTable({
-      head: cabecalhos,
-      body: corpo,
-      startY: 40,
-      theme: 'grid',
-      headStyles: { fillColor: [34, 197, 94] },
-      styles: { fontSize: 8, cellPadding: 3 },
-      margin: { left: 14, right: 14 }
-    });
+async function exportarPDFSaida() {
+  try {
+    const response = await fetch('http://localhost:3001/api/relatorio/exportar/saidas');
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `relatorio-saidas-${new Date().toISOString().split('T')[0]}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      mostrarToast('PDF exportado com sucesso!');
+    } else {
+      mostrarToast('Erro ao exportar PDF', 'erro');
+    }
+  } catch (error) {
+    console.error('Erro ao exportar PDF:', error);
+    mostrarToast('Erro ao conectar com o servidor', 'erro');
   }
-
-  doc.save(`relatorio-removidos-${new Date().toISOString().split('T')[0]}.pdf`);
 }

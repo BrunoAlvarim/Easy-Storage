@@ -1,5 +1,7 @@
 let editIndex = null;
 let itensFiltrados = [];
+let todosItens = [];
+const API_BASE_URL = window.location.origin;
 
 // Elementos do DOM para toast e modal
 const toast = document.getElementById('toast');
@@ -12,6 +14,7 @@ const nenhumResultado = document.getElementById('nenhumResultado');
 const contadorItens = document.getElementById('contadorItens');
 const contadorNumero = document.getElementById('contadorNumero');
 const filtroDataInicio = document.getElementById('filtroDataInicio');
+const btnSalvar = document.getElementById('btnSalvar');
 const filtroDataFim = document.getElementById('filtroDataFim');
 
 // Função para mostrar Toast
@@ -90,27 +93,25 @@ document.addEventListener('click', (e) => {
 function filtrarItens() {
   const dataInicio = filtroDataInicio.value;
   const dataFim = filtroDataFim.value;
-  
-  let itens = JSON.parse(localStorage.getItem("itens")) || [];
-  
-  itensFiltrados = itens.filter(item => {
-    const itemData = new Date(item.data);
+
+  itensFiltrados = todosItens.filter(item => {
+    const itemData = new Date(item.data_entrada);
     let dataMatch = true;
-    
+
     if (dataInicio) {
       const inicioData = new Date(dataInicio);
       dataMatch = dataMatch && itemData >= inicioData;
     }
-    
+
     if (dataFim) {
       const fimData = new Date(dataFim);
       fimData.setHours(23, 59, 59, 999); // Fim do dia
       dataMatch = dataMatch && itemData <= fimData;
     }
-    
+
     return dataMatch;
   });
-  
+
   listarItens();
 }
 
@@ -151,13 +152,21 @@ window.onload = () => {
         editarItem(Number(index));
     }
 
+    // Botões do formulário
+    const btnSalvar = document.getElementById('btnSalvar');
+    const btnLimpar = document.getElementById('btnLimpar');
+    if (btnSalvar) btnSalvar.addEventListener('click', salvarItem);
+    if (btnLimpar) btnLimpar.addEventListener('click', limparFormulario);
+
     // Toggle da Sidebar para Mobile
     const toggleButton = document.getElementById('toggleSidebar');
     const sidebar = document.querySelector('aside');
 
-    toggleButton.addEventListener('click', () => {
-        sidebar.classList.toggle('hidden');
-    });
+    if (toggleButton && sidebar) {
+      toggleButton.addEventListener('click', () => {
+          sidebar.classList.toggle('hidden');
+      });
+    }
 
     // Adicionar classe active ao item do menu atual
     const menuItems = document.querySelectorAll('.sidebar-item');
@@ -168,38 +177,54 @@ window.onload = () => {
     });
 };
 
-function salvarItem() {
+async function salvarItem() {
     const codigo = document.getElementById("codigo").value.trim();
     const nome = document.getElementById("nome").value.trim();
     const descricao = document.getElementById("descricao").value.trim();
     const condicao = document.getElementById("condicao").value;
 
-    if (!codigo || !nome) {
-        mostrarToast("Preencha código e nome!", 'erro');
+    if (!codigo || !nome || !condicao) {
+        mostrarToast("Preencha todos os campos!", 'erro');
         return;
     }
 
-    let itens = JSON.parse(localStorage.getItem("itens")) || [];
+    const itemData = { codigo, nome, descricao, condicao };
 
-    if (editIndex === null) {
-        const data = new Date().toISOString();
-        const item = { codigo, nome, descricao, condicao, data };
-        itens.push(item);
-        mostrarToast("Item adicionado com sucesso!");
-    } else {
-        itens[editIndex].codigo = codigo;
-        itens[editIndex].nome = nome;
-        itens[editIndex].descricao = descricao;
-        itens[editIndex].condicao = condicao;
-        editIndex = null;
-        document.getElementById("btnSalvar").innerHTML = '<i class="fas fa-save mr-2"></i>Salvar Item';
-        mostrarToast("Item atualizado com sucesso!");
+    try {
+        let response;
+        if (editIndex === null) {
+            // Adicionar novo item
+            response = await fetch(`${API_BASE_URL}/api/item`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(itemData)
+            });
+        } else {
+            // Editar item existente
+            response = await fetch(`${API_BASE_URL}/api/item/${editIndex}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(itemData)
+            });
+        }
+
+        if (response.ok) {
+            const result = await response.json();
+            mostrarToast(editIndex === null ? "Item adicionado com sucesso!" : "Item atualizado com sucesso!");
+            limparFormulario();
+            listarItens();
+        } else {
+            const error = await response.json();
+            mostrarToast(error.error || "Erro ao salvar item", 'erro');
+        }
+    } catch (error) {
+        console.error('Erro ao salvar item:', error);
+        mostrarToast("Erro ao conectar com o servidor", 'erro');
     }
-
-    localStorage.setItem("itens", JSON.stringify(itens));
-
-    limparFormulario();
-    listarItens();
 }
 
 function limparFormulario() {
@@ -211,166 +236,197 @@ function limparFormulario() {
     document.getElementById("btnSalvar").innerHTML = '<i class="fas fa-save mr-2"></i>Salvar Item';
 }
 
-function listarItens() {
-    let itens = JSON.parse(localStorage.getItem("itens")) || [];
-    const tbody = document.getElementById("tabelaItensBody");
-    tbody.innerHTML = "";
+async function listarItens() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/item`);
+        const itens = await response.json();
 
-    // Usar itens filtrados se houver filtro ativo, senão todos os itens
-    const itensParaExibir = itensFiltrados.length > 0 ? itensFiltrados : itens;
-    const totalItens = itens.length;
-    const itensExibidos = itensParaExibir.length;
-
-    // Atualizar contador
-    contadorNumero.textContent = itensExibidos;
-    if (itensFiltrados.length > 0) {
-        contadorItens.innerHTML = `<i class="fas fa-filter mr-2"></i>${itensExibidos} de ${totalItens} itens`;
-    } else {
-        contadorItens.innerHTML = `<i class="fas fa-box mr-2"></i>${itensExibidos} ${itensExibidos === 1 ? 'item' : 'itens'}`;
-    }
-
-    // Mostrar mensagens apropriadas
-    if (totalItens === 0) {
-        tbody.classList.add('hidden');
-        listaVazia.classList.remove('hidden');
-        nenhumResultado.classList.add('hidden');
-        return;
-    } else if (itensExibidos === 0 && itensFiltrados.length > 0) {
-        tbody.classList.add('hidden');
-        listaVazia.classList.add('hidden');
-        nenhumResultado.classList.remove('hidden');
-        return;
-    } else {
-        tbody.classList.remove('hidden');
-        listaVazia.classList.add('hidden');
-        nenhumResultado.classList.add('hidden');
-    }
-
-    itensParaExibir.forEach((item, indexOriginal) => {
-        // Encontrar o índice original no array completo para edição/remoção
-        const indexCompleto = itens.findIndex(i => i.codigo === item.codigo && i.data === item.data);
-        const tr = document.createElement("tr");
-        tr.className = 'hover:bg-gray-800/50 transition-colors';
-
-        // Formatação da condição
-        let condicaoTexto = '';
-        let corBadge = '';
-        let iconeBadge = '';
-        
-        switch (item.condicao) {
-            case 'bom':
-                condicaoTexto = 'Bom';
-                corBadge = 'bg-green-500/20 text-green-400 border-green-500/30';
-                iconeBadge = 'fa-check-circle';
-                break;
-            case 'medio':
-                condicaoTexto = 'Médio';
-                corBadge = 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-                iconeBadge = 'fa-exclamation-triangle';
-                break;
-            case 'ruim':
-                condicaoTexto = 'Ruim';
-                corBadge = 'bg-red-500/20 text-red-400 border-red-500/30';
-                iconeBadge = 'fa-times-circle';
-                break;
-            default:
-                condicaoTexto = 'Não definida';
-                corBadge = 'bg-gray-500/20 text-gray-400 border-gray-500/30';
-                iconeBadge = 'fa-question-circle';
+        if (!response.ok) {
+            mostrarToast('Erro ao carregar itens', 'erro');
+            return;
         }
 
-        tr.innerHTML = `
-            <td class="py-4 px-4 font-medium">${item.codigo}</td>
-            <td class="py-4 px-4">
-                <div class="font-medium text-white">${item.nome}</div>
-            </td>
-            <td class="py-4 px-4">
-                <div class="text-gray-400 text-sm max-w-xs">${item.descricao || 'Sem descrição'}</div>
-            </td>
-            <td class="py-4 px-4">
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${corBadge}">
-                    <i class="fas ${iconeBadge} mr-1"></i>${condicaoTexto}
-                </span>
-            </td>
-            <td class="py-4 px-4 text-gray-400 text-sm">
-                ${new Date(item.data).toLocaleDateString('pt-BR')}
-            </td>
-            <td class="py-4 px-4">
-                <div class="dropdown-container relative">
-                    <button onclick="toggleDropdown(${indexCompleto})" 
-                            class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                    <div id="dropdown-${indexCompleto}" 
-                         class="dropdown-menu absolute right-0 top-full mt-1 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-10">
-                        <button onclick="editarItem(${indexCompleto})" 
-                                class="w-full text-left px-4 py-3 text-gray-300 hover:bg-gray-700 rounded-t-lg transition flex items-center">
-                            <i class="fas fa-edit mr-3 text-blue-400"></i>
-                            Editar Item
+        todosItens = itens;
+        const tbody = document.getElementById("tabelaItensBody");
+        tbody.innerHTML = "";
+
+        // Aplicar filtros se houver
+        let itensParaExibir = itens;
+        if (itensFiltrados.length > 0) {
+            itensParaExibir = itensFiltrados;
+        }
+
+        const totalItens = itens.length;
+        const itensExibidos = itensParaExibir.length;
+
+        // Atualizar contador
+        contadorNumero.textContent = itensExibidos;
+        if (itensFiltrados.length > 0) {
+            contadorItens.innerHTML = `<i class="fas fa-filter mr-2"></i>${itensExibidos} de ${totalItens} itens`;
+        } else {
+            contadorItens.innerHTML = `<i class="fas fa-box mr-2"></i>${itensExibidos} ${itensExibidos === 1 ? 'item' : 'itens'}`;
+        }
+
+        // Mostrar mensagens apropriadas
+        if (totalItens === 0) {
+            tbody.classList.add('hidden');
+            listaVazia.classList.remove('hidden');
+            nenhumResultado.classList.add('hidden');
+            return;
+        } else if (itensExibidos === 0 && itensFiltrados.length > 0) {
+            tbody.classList.add('hidden');
+            listaVazia.classList.add('hidden');
+            nenhumResultado.classList.remove('hidden');
+            return;
+        } else {
+            tbody.classList.remove('hidden');
+            listaVazia.classList.add('hidden');
+            nenhumResultado.classList.add('hidden');
+        }
+
+        itensParaExibir.forEach((item) => {
+            const tr = document.createElement("tr");
+            tr.className = 'hover:bg-gray-800/50 transition-colors';
+
+            // Formatação da condição
+            let condicaoTexto = '';
+            let corBadge = '';
+            let iconeBadge = '';
+
+            switch (item.condicao) {
+                case 'bom':
+                    condicaoTexto = 'Bom';
+                    corBadge = 'bg-green-500/20 text-green-400 border-green-500/30';
+                    iconeBadge = 'fa-check-circle';
+                    break;
+                case 'medio':
+                    condicaoTexto = 'Médio';
+                    corBadge = 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+                    iconeBadge = 'fa-exclamation-triangle';
+                    break;
+                case 'ruim':
+                    condicaoTexto = 'Ruim';
+                    corBadge = 'bg-red-500/20 text-red-400 border-red-500/30';
+                    iconeBadge = 'fa-times-circle';
+                    break;
+                default:
+                    condicaoTexto = 'Não definida';
+                    corBadge = 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+                    iconeBadge = 'fa-question-circle';
+            }
+
+            tr.innerHTML = `
+                <td class="py-4 px-4 font-medium">${item.codigo}</td>
+                <td class="py-4 px-4">
+                    <div class="font-medium text-white">${item.nome}</div>
+                </td>
+                <td class="py-4 px-4">
+                    <div class="text-gray-400 text-sm max-w-xs">${item.descricao || 'Sem descrição'}</div>
+                </td>
+                <td class="py-4 px-4">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${corBadge}">
+                        <i class="fas ${iconeBadge} mr-1"></i>${condicaoTexto}
+                    </span>
+                </td>
+                <td class="py-4 px-4 text-gray-400 text-sm">
+                    ${new Date(item.data_entrada).toLocaleDateString('pt-BR')}
+                </td>
+                <td class="py-4 px-4">
+                    <div class="dropdown-container relative">
+                        <button onclick="toggleDropdown(${item.id_item})"
+                                class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition">
+                            <i class="fas fa-ellipsis-v"></i>
                         </button>
-                        <button onclick="removerItem(${indexCompleto})" 
-                                class="w-full text-left px-4 py-3 text-gray-300 hover:bg-gray-700 rounded-b-lg transition flex items-center">
-                            <i class="fas fa-trash mr-3 text-red-400"></i>
-                            Remover Item
-                        </button>
+                        <div id="dropdown-${item.id_item}"
+                             class="dropdown-menu absolute right-0 top-full mt-1 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-10">
+                            <button onclick="editarItem(${item.id_item})"
+                                    class="w-full text-left px-4 py-3 text-gray-300 hover:bg-gray-700 rounded-t-lg transition flex items-center">
+                                <i class="fas fa-edit mr-3 text-blue-400"></i>
+                                Editar Item
+                            </button>
+                            <button onclick="removerItem(${item.id_item})"
+                                    class="w-full text-left px-4 py-3 text-gray-300 hover:bg-gray-700 rounded-b-lg transition flex items-center">
+                                <i class="fas fa-trash mr-3 text-red-400"></i>
+                                Remover Item
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </td>
-        `;
+                </td>
+            `;
 
-        tbody.appendChild(tr);
-    });
+            tbody.appendChild(tr);
+        });
+    } catch (error) {
+        console.error('Erro ao listar itens:', error);
+        mostrarToast('Erro ao carregar itens', 'erro');
+    }
 }
 
-function editarItem(index) {
-    let itens = JSON.parse(localStorage.getItem("itens")) || [];
-    const item = itens[index];
-
-    document.getElementById("codigo").value = item.codigo;
-    document.getElementById("nome").value = item.nome;
-    document.getElementById("descricao").value = item.descricao;
-    document.getElementById("condicao").value = item.condicao || '';
-
-    editIndex = index;
-    document.getElementById("btnSalvar").innerHTML = '<i class="fas fa-sync-alt mr-2"></i>Atualizar Item';
-
-    // Fecha o dropdown
-    const dropdown = document.getElementById(`dropdown-${index}`);
-    if (dropdown) dropdown.classList.remove('show');
-    
-    // Foco no campo nome
-    document.getElementById("nome").focus();
-}
-
-function removerItem(index) {
-    // Fecha o dropdown antes de mostrar a confirmação
-    const dropdown = document.getElementById(`dropdown-${index}`);
-    if (dropdown) dropdown.classList.remove('show');
-    
-    let itens = JSON.parse(localStorage.getItem("itens")) || [];
-    const item = itens[index];
-    
-    confirmarAcao(`Tem certeza que deseja remover o item "${item.nome}"?\n\nEle será movido para itens de saída no histórico.`, (confirmado) => {
-        if (!confirmado) return;
-
-        let removidos = JSON.parse(localStorage.getItem("removidos")) || [];
-
-        // CORREÇÃO: Remover o item corretamente do array
-        const itemRemovido = itens[index];
-        itens.splice(index, 1);
-        itemRemovido.dataSaida = new Date().toISOString();
-
-        removidos.push(itemRemovido);
-
-        localStorage.setItem("itens", JSON.stringify(itens));
-        localStorage.setItem("removidos", JSON.stringify(removidos));
-
-        listarItens();
-
-        if (editIndex === index) {
-            limparFormulario();
+async function editarItem(id) {
+    try {
+        const item = todosItens.find(i => i.id_item === id);
+        if (!item) {
+            mostrarToast('Item não encontrado', 'erro');
+            return;
         }
 
-        mostrarToast("Item removido com sucesso! Ele agora aparece no relatório de saídas.");
-    });
+        document.getElementById("codigo").value = item.codigo;
+        document.getElementById("nome").value = item.nome;
+        document.getElementById("descricao").value = item.descricao;
+        document.getElementById("condicao").value = item.condicao;
+
+        editIndex = id;
+        document.getElementById("btnSalvar").innerHTML = '<i class="fas fa-sync-alt mr-2"></i>Atualizar Item';
+
+        // Fecha o dropdown
+        const dropdown = document.getElementById(`dropdown-${id}`);
+        if (dropdown) dropdown.classList.remove('show');
+
+        // Foco no campo nome
+        document.getElementById("nome").focus();
+    } catch (error) {
+        console.error('Erro ao editar item:', error);
+        mostrarToast('Erro ao carregar item', 'erro');
+    }
+}
+
+async function removerItem(id) {
+    // Fecha o dropdown antes de mostrar a confirmação
+    const dropdown = document.getElementById(`dropdown-${id}`);
+    if (dropdown) dropdown.classList.remove('show');
+
+    try {
+        const item = todosItens.find(i => i.id_item === id);
+        if (!item) {
+            mostrarToast('Item não encontrado', 'erro');
+            return;
+        }
+
+        confirmarAcao(`Tem certeza que deseja remover o item "${item.nome}"?\n\nEle será movido para itens de saída no histórico.`, async (confirmado) => {
+            if (!confirmado) return;
+
+            try {
+                const deleteResponse = await fetch(`${API_BASE_URL}/api/item/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (deleteResponse.ok) {
+                    listarItens();
+                    if (editIndex === id) {
+                        limparFormulario();
+                    }
+                    mostrarToast("Item removido com sucesso! Ele agora aparece no relatório de saídas.");
+                } else {
+                    const error = await deleteResponse.json();
+                    mostrarToast(error.error || "Erro ao remover item", 'erro');
+                }
+            } catch (error) {
+                console.error('Erro ao remover item:', error);
+                mostrarToast("Erro ao conectar com o servidor", 'erro');
+            }
+        });
+    } catch (error) {
+        console.error('Erro ao buscar item:', error);
+        mostrarToast('Erro ao carregar item', 'erro');
+    }
 }

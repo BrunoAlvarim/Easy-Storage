@@ -84,7 +84,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-900 min-h-screen text-white">
+<body id="bodyTema" class="min-h-screen relative overflow-x-hidden bg-white text-gray-900">
 
     <!-- Layout Principal -->
     <div class="flex">
@@ -144,6 +144,7 @@
                     <p class="text-gray-400">Gerencie suas informações pessoais e preferências</p>
                 </div>
                 <div class="flex items-center space-x-4">
+                    <button id="btnTema" class="btn-back">Dark Mode</button>  
                     <a href="usuario.html" class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center hover:shadow-lg transition-shadow">
                         <i class="fas fa-user text-white"></i>
                     </a>
@@ -388,5 +389,6 @@
 
     <!-- Script -->
     <script src="../js/usuario.js"></script>
+    <script src="../backend/theme.js"></script>
 </body>
 </html>

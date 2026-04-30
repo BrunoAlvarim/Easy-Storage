@@ -187,6 +187,7 @@
     </div>
   </div>
 
+  <script src="../backend/cadastro.js"></script>
   <script>
     // Elementos do DOM para toast
     const toast = document.getElementById('toast');
@@ -211,7 +212,7 @@
       }, 4000);
     }
 
-    function cadastrarUsuario() {
+    async function cadastrarUsuario() {
       const nome = document.getElementById('nome').value.trim();
       const email = document.getElementById('email').value.trim();
       const senha = document.getElementById('senha').value;
@@ -227,25 +228,31 @@
         return;
       }
 
-      const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-      
-      // Verificar se o email já existe
-      const usuarioExistente = usuarios.find(u => u.email === email);
-      if (usuarioExistente) {
-        mostrarToast("Este email já está cadastrado!", 'erro');
-        return;
+      try {
+        const response = await fetch('http://localhost:3001/cadastro', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ nome, email, senha })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          mostrarToast(`Cadastro realizado com sucesso! Bem-vindo, ${nome}`);
+          
+          // Redireciona após 2 segundos
+          setTimeout(() => {
+            window.location.href = "login.html";
+          }, 2000);
+        } else {
+          mostrarToast(data.message, 'erro');
+        }
+      } catch (error) {
+        console.error('Erro ao cadastrar:', error);
+        mostrarToast("Erro ao conectar com o servidor!", 'erro');
       }
-
-      // Adicionar novo usuário
-      usuarios.push({ nome, email, senha });
-      localStorage.setItem('usuarios', JSON.stringify(usuarios));
-
-      mostrarToast(`Cadastro realizado com sucesso! Bem-vindo, ${nome} ✅`);
-      
-      // Redireciona após 2 segundos para o usuário ver o toast
-      setTimeout(() => {
-        window.location.href = "login.html";
-      }, 2000);
     }
 
     // Alternar visibilidade da senha
@@ -292,5 +299,6 @@
     // Inicializar partículas quando a página carregar
     window.addEventListener('load', criarParticulas);
   </script>
+  <script src="../backend/theme.js"></script>
 </body>
 </html>
