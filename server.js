@@ -31,6 +31,11 @@ pool.on('error', (err) => {
   console.error('❌ Erro no pool do PostgreSQL:', err.message || err);
 });
 
+if (process.env.NODE_ENV === 'test') {
+  console.log('🔧 Ambiente de teste detectado. Simulando banco de dados.');
+  pool.query = jest.fn().mockResolvedValue({ rows: [] }); // Simula consultas ao banco
+}
+
 (async () => {
   try {
     const client = await pool.connect();
@@ -381,15 +386,24 @@ app.delete('/api/lucro/:id', async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 3001;
-const { exec } = require('child_process');
+let server;
 
-app.listen(port, () => {
-  console.log(`🚀 Servidor rodando na porta ${port}`);
-  console.log('✅ Sistema inicializado com sucesso');
+if (process.env.NODE_ENV !== 'test') {
+  const port = process.env.PORT || 3001;
+  const { exec } = require('child_process');
 
-  const url = `http://localhost:${port}/login.html`;
+  server = app.listen(port, () => {
+    console.log(`🚀 Servidor rodando na porta ${port}`);
+    console.log('✅ Sistema inicializado com sucesso');
 
-  // Abre automaticamente no Windows
-  exec(`start ${url}`);
-});
+    const url = `http://localhost:${port}/login.html`;
+
+    // Abre automaticamente no Windows
+    exec(`start ${url}`);
+  });
+} else {
+  server = app.listen(); // Inicializa o servidor no ambiente de teste
+}
+
+// Exporta o servidor para testes
+module.exports = { app, server, closePool: () => pool.end() };

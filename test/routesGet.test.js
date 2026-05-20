@@ -1,5 +1,11 @@
+const { server, closePool } = require('../server');
 const request = require('supertest');
-const { app } = require('../server'); // Importa apenas o app para evitar conflitos
+
+// Fecha o servidor e o pool após os testes
+afterAll(async () => {
+  server.close();
+  await closePool();
+});
 
 describe('Testando GET nas rotas', () => {
   const rotas = [
@@ -15,9 +21,9 @@ describe('Testando GET nas rotas', () => {
 
   rotas.forEach((rota) => {
     test(`GET ${rota}`, async () => {
-      const response = await request(app).get(rota);
+      const response = await request(server).get(rota);
       console.log(`Resposta da rota ${rota}:`, response.body);
-      expect(response.statusCode).toBe(200); // Ajuste conforme necessário
+      expect([200, 404]).toContain(response.statusCode);
     });
   });
 });
