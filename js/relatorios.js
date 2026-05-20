@@ -458,7 +458,7 @@ async function exportarPDFMes() {
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
-      mostrarToast('PDF exportado com sucesso!');
+      mostrarToast('PDF exportado com sucesso! 📄', 'sucesso');
     } else {
       mostrarToast('Erro ao exportar PDF', 'erro');
     }
@@ -481,7 +481,7 @@ async function exportarPDFSaida() {
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
-      mostrarToast('PDF exportado com sucesso!');
+      mostrarToast('PDF exportado com sucesso! 📄', 'sucesso');
     } else {
       mostrarToast('Erro ao exportar PDF', 'erro');
     }

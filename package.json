@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -18,5 +18,14 @@
     "open": "^11.0.0",
     "pdfkit": "^0.17.2",
     "pg": "^8.16.3"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"]
+  },
+  "devDependencies": {
+    "jest-environment-jsdom": "^30.4.1",
+    "supertest": "^7.2.2",
+    "util": "^0.12.5"
   }
 }

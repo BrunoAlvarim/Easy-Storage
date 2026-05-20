@@ -1,6 +1,7 @@
 // ============================================================
 // Estado global
 // ============================================================
+
 let todosItens  = [];
 let todosLucros = [];
 
@@ -261,21 +262,22 @@ function carregarTabelaLucros() {
 // Gráfico de lucros
 // ============================================================
 function atualizarGraficoLucros() {
-  const ctx        = document.getElementById('chartLucros').getContext('2d');
+  const ctx = document.getElementById('chartLucros').getContext('2d');
+
   const labels     = [];
   const dadosLucro = [];
   const cores      = [];
+  const coresBorda = [];
 
   todosLucros.forEach(l => {
     const lucro = (parseFloat(l.venda) || 0) - (parseFloat(l.custo) || 0) - (parseFloat(l.reparo) || 0);
     labels.push(truncar(l.nome, 15));
     dadosLucro.push(lucro);
-    cores.push(lucro > 0 ? '#10B981' : '#EF4444');
+    cores.push(lucro >= 0 ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.7)');
+    coresBorda.push(lucro >= 0 ? '#10B981' : '#EF4444');
   });
 
-  if (window._chartLucrosInstance) {
-    window._chartLucrosInstance.destroy();
-  }
+  if (window._chartLucrosInstance) window._chartLucrosInstance.destroy();
 
   window._chartLucrosInstance = new Chart(ctx, {
     type: 'bar',
@@ -285,24 +287,41 @@ function atualizarGraficoLucros() {
         label: 'Lucro por Item (R$)',
         data: dadosLucro,
         backgroundColor: cores,
-        borderColor: cores,
-        borderWidth: 1,
-      }],
+        borderColor: coresBorda,
+        borderWidth: 2,
+        borderRadius: 8,
+        borderSkipped: false,
+        barPercentage: 0.5,
+        categoryPercentage: 0.6,
+      }]
     },
     options: {
       responsive: true,
-      plugins: { legend: { display: false } },
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` R$ ${ctx.parsed.y.toFixed(2)}`
+          }
+        }
+      },
       scales: {
         x: {
-          grid:  { color: 'rgba(255,255,255,0.1)' },
-          ticks: { color: '#E5E7EB' },
+          grid:  { display: false },
+          ticks: { color: '#9CA3AF', font: { family: 'Poppins', size: 12 } }
         },
         y: {
-          grid:  { color: 'rgba(255,255,255,0.1)' },
-          ticks: { color: '#E5E7EB', callback: v => 'R$ ' + v },
-        },
-      },
-    },
+          beginAtZero: true,
+          grid:  { color: 'rgba(255,255,255,0.05)' },
+          ticks: {
+            color: '#9CA3AF',
+            font:  { family: 'Poppins', size: 11 },
+            callback: v => 'R$ ' + v.toFixed(0)
+          }
+        }
+      }
+    }
   });
 }
 

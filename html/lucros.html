@@ -225,7 +225,9 @@
                     <!-- Gráfico de Lucratividade -->
                     <section class="glass-effect rounded-xl p-6 card-hover">
                         <h2 class="text-xl font-bold gradient-text mb-6">Distribuição de Lucros</h2>
-                        <canvas id="chartLucros" width="400" height="300"></canvas>
+                        <div class="relative w-full" style="height: 300px; overflow: hidden;">
+                            <canvas id="chartLucros" style="max-height: 300px;"></canvas>
+                        </div>
                     </section>
                 </div>
 

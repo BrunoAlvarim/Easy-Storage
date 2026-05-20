@@ -14,7 +14,13 @@
 body{
     font-family:'Poppins',sans-serif;
 }
+.dropdown-menu {
+    display: none;
+}
 
+.dropdown-menu.show {
+    display: block;
+}
 .glass-effect{
     background:rgba(255,255,255,.05);
     backdrop-filter:blur(10px);
@@ -174,8 +180,10 @@ class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3">
 </div>
 
 <div class="md:col-span-2">
-<button onclick="salvarItem()"
-class="bg-gradient-to-r from-blue-600 to-purple-600 py-3 px-8 rounded-lg">
+<!-- <button onclick="salvarItem()"
+class="bg-gradient-to-r from-blue-600 to-purple-600 py-3 px-8 rounded-lg"> -->
+<button id="btnSalvar" onclick="salvarItem()"
+  class="bg-gradient-to-r from-blue-600 to-purple-600 py-3 px-8 rounded-lg">
 <i class="fas fa-save mr-2"></i>Salvar
 </button>
 
