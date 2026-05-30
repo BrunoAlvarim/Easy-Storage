@@ -416,8 +416,15 @@ app.delete('/api/lucro/:id', async (req, res) => {
 });
 
 let server;
+const isVercel = !!process.env.VERCEL;
 
-if (process.env.NODE_ENV !== 'test') {
+// Em ambientes normais (desenvolvimento) iniciamos o servidor localmente.
+// Em Vercel e em ambientes serverless, NÃO chamamos app.listen — Vercel
+// trata o export padrão como handler.
+if (process.env.NODE_ENV === 'test') {
+  // Para testes, manter um servidor escutando (pode ser necessário para alguns harnesses)
+  server = app.listen();
+} else if (!isVercel) {
   const port = process.env.PORT || 3001;
   const { exec } = require('child_process');
 
@@ -428,11 +435,15 @@ if (process.env.NODE_ENV !== 'test') {
     const url = `http://localhost:${port}/login.html`;
 
     // Abre automaticamente no Windows
-    exec(`start ${url}`);
+    try { exec(`start ${url}`); } catch (e) { /* não crítico */ }
   });
 } else {
-  server = app.listen(); // Inicializa o servidor no ambiente de teste
+  // Em Vercel, não iniciamos o listener. server fica undefined.
+  server = undefined;
 }
 
-// Exporta o servidor para testes
-module.exports = { app, server, closePool: () => pool.end() };
+// Exporta o `app` (Express é uma função compatível com handler do Vercel).
+// Anexamos propriedades úteis para testes locais (`server`) e para fechar o pool.
+module.exports = app;
+module.exports.server = server;
+module.exports.closePool = () => pool.end();
