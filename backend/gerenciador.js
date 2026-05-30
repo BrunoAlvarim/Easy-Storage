@@ -357,23 +357,20 @@ async function removerItem(id) {
     const item = todosItens.find(i => i.id_item === id);
     if (!item) { mostrarToast('Item não encontrado', 'erro'); return; }
 
-    confirmarAcao(`Tem certeza que deseja remover o item "${item.nome}"?\n\nEle será movido para itens de saída no histórico.`, async (confirmado) => {
-        if (!confirmado) return;
+    const confirmado = confirm(`Remover o item "${item.nome}"?`);
+    if (!confirmado) return;
 
-        try {
-            const deleteResponse = await fetch(`${API_BASE_URL}/api/item/${id}`, { method: 'DELETE' });
-
-            if (deleteResponse.ok) {
-                if (editIndex === id) limparFormulario();
-                mostrarToast("Item removido com sucesso! Ele agora aparece no relatório de saídas.");
-                listarItens();
-            } else {
-                const error = await deleteResponse.json();
-                mostrarToast(error.error || "Erro ao remover item", 'erro');
-            }
-        } catch (error) {
-            console.error('Erro ao remover item:', error);
-            mostrarToast("Erro ao conectar com o servidor", 'erro');
+    try {
+        const deleteResponse = await fetch(`${API_BASE_URL}/api/item/${id}`, { method: 'DELETE' });
+        if (deleteResponse.ok) {
+            if (editIndex === id) limparFormulario();
+            mostrarToast("Item removido com sucesso!");
+            listarItens();
+        } else {
+            const error = await deleteResponse.json();
+            mostrarToast(error.error || "Erro ao remover item", 'erro');
         }
-    });
+    } catch (error) {
+        mostrarToast("Erro ao conectar com o servidor", 'erro');
+    }
 }

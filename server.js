@@ -36,10 +36,29 @@ if (process.env.NODE_ENV === 'test') {
   pool.query = jest.fn().mockResolvedValue({ rows: [] }); // Simula consultas ao banco
 }
 
+// ==============================
+// INICIALIZAÇÃO - Verificar/Criar Colunas
+// ==============================
 (async () => {
   try {
     const client = await pool.connect();
     console.log('✅ Conectado ao banco PostgreSQL');
+
+    // Adicionar coluna 'removido' na tabela 'item' se não existir
+    try {
+      await client.query(`
+        ALTER TABLE item 
+        ADD COLUMN IF NOT EXISTS removido BOOLEAN DEFAULT FALSE;
+      `);
+      console.log('✅ Coluna "removido" verificada/criada na tabela "item"');
+    } catch (altErr) {
+      if (altErr.message.includes('already exists')) {
+        console.log('ℹ️ Coluna "removido" já existe na tabela "item"');
+      } else {
+        console.warn('⚠️ Aviso ao criar coluna removido:', altErr.message);
+      }
+    }
+
     client.release();
   } catch (err) {
     console.error('❌ Erro ao conectar ao banco:', err.message || err);
@@ -182,6 +201,8 @@ app.put('/api/item/:id', async (req, res) => {
 
 app.delete('/api/item/:id', async (req, res) => {
   const { id } = req.params;
+  
+  console.log('🗑️ DELETE /api/item/:id recebido com id:', id);
 
   try {
     const itemResult = await pool.query(
@@ -189,7 +210,10 @@ app.delete('/api/item/:id', async (req, res) => {
       [id]
     );
 
+    console.log('Item encontrado:', itemResult.rows.length > 0 ? itemResult.rows[0].nome : 'nenhum');
+
     if (itemResult.rows.length === 0) {
+      console.warn('Item não encontrado:', id);
       return res.status(404).json({ error: 'Item não encontrado' });
     }
 
@@ -198,10 +222,12 @@ app.delete('/api/item/:id', async (req, res) => {
       [id]
     );
 
+    console.log('✅ Item marcado como removido:', itemResult.rows[0].nome);
     res.json({ message: 'Item removido do estoque' });
 
   } catch (err) {
-    res.status(500).json({ error: 'Erro ao remover item' });
+    console.error('❌ Erro ao remover item:', err.message);
+    res.status(500).json({ error: 'Erro ao remover item: ' + err.message });
   }
 });
 
@@ -216,6 +242,7 @@ app.get('/api/relatorio/itens-mes', async (req, res) => {
       FROM item
       WHERE EXTRACT(MONTH FROM data_entrada) = EXTRACT(MONTH FROM CURRENT_DATE)
       AND EXTRACT(YEAR FROM data_entrada) = EXTRACT(YEAR FROM CURRENT_DATE)
+      AND COALESCE(removido, FALSE) = FALSE
       ORDER BY data_entrada DESC;
     `);
 
@@ -254,6 +281,7 @@ app.get('/api/relatorio/exportar/:tipo', async (req, res) => {
       FROM item
       WHERE EXTRACT(MONTH FROM data_entrada) = EXTRACT(MONTH FROM CURRENT_DATE)
       AND EXTRACT(YEAR FROM data_entrada) = EXTRACT(YEAR FROM CURRENT_DATE)
+      AND COALESCE(removido, FALSE) = FALSE
     `;
     titulo = 'Itens do mês';
   } else if (tipo === 'saidas') {
@@ -318,6 +346,7 @@ app.get('/api/dashboard/estatisticas', async (req, res) => {
       SELECT COUNT(*) FROM item
       WHERE DATE_PART('month', data_entrada) = DATE_PART('month', CURRENT_DATE)
       AND DATE_PART('year',  data_entrada) = DATE_PART('year',  CURRENT_DATE)
+      AND COALESCE(removido, FALSE) = FALSE
     `);
 
     const condicoes = await pool.query(`

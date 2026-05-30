@@ -406,9 +406,16 @@ async function removerItem(id) {
             if (!confirmado) return;
 
             try {
+                console.log('Enviando DELETE para:', `${API_BASE_URL}/api/item/${id}`);
                 const deleteResponse = await fetch(`${API_BASE_URL}/api/item/${id}`, {
-                    method: 'DELETE'
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 });
+
+                console.log('Status da resposta:', deleteResponse.status);
+                console.log('Response OK:', deleteResponse.ok);
 
                 if (deleteResponse.ok) {
                     listarItens();
@@ -417,12 +424,18 @@ async function removerItem(id) {
                     }
                     mostrarToast("Item removido com sucesso! Ele agora aparece no relatório de saídas.");
                 } else {
-                    const error = await deleteResponse.json();
-                    mostrarToast(error.error || "Erro ao remover item", 'erro');
+                    try {
+                        const error = await deleteResponse.json();
+                        console.error('Erro do servidor:', error);
+                        mostrarToast(error.error || "Erro ao remover item", 'erro');
+                    } catch (parseError) {
+                        console.error('Erro ao parsear resposta:', parseError);
+                        mostrarToast(`Erro ao remover item (Status: ${deleteResponse.status})`, 'erro');
+                    }
                 }
             } catch (error) {
                 console.error('Erro ao remover item:', error);
-                mostrarToast("Erro ao conectar com o servidor", 'erro');
+                mostrarToast("Erro ao conectar com o servidor: " + error.message, 'erro');
             }
         });
     } catch (error) {
