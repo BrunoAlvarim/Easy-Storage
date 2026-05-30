@@ -1,4 +1,6 @@
-const API_BASE_URL = window.location.origin;
+const API_BASE_URL = window.location.protocol === 'file:'
+  ? 'http://localhost:3001'
+  : window.location.origin;
 
 // Elementos do DOM
 const toast = document.getElementById('toast');

@@ -3,6 +3,11 @@
 // ==========================
 const toast = document.getElementById('toast');
 
+// URL base da API (dinâmica para suporte a hospedagem)
+const API_BASE_URL = window.location.protocol === 'file:'
+  ? 'http://localhost:3001'
+  : window.location.origin;
+
 // Função para mostrar Toast (notificação flutuante)
 function mostrarToast(mensagem, tipo = 'sucesso') {
   const conteudo = document.getElementById('toastConteudo');
@@ -36,7 +41,7 @@ async function cadastrarUsuario() {
   }
 
   try {
-    const response = await fetch('http://localhost:3001/cadastro', {
+    const response = await fetch(`${API_BASE_URL}/cadastro`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nome, email, senha })

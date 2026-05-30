@@ -6,7 +6,11 @@ const filtroCondicao = document.getElementById('filtroCondicao');
 const filtroBusca = document.getElementById('filtroBusca');
 const filtroDataInicio = document.getElementById('filtroDataInicio');
 const filtroDataFim = document.getElementById('filtroDataFim');
-const API_BASE_URL = window.location.origin;
+
+// URL base da API (dinâmica para suporte a hospedagem)
+const API_BASE_URL = window.location.protocol === 'file:'
+  ? 'http://localhost:3001'
+  : window.location.origin;
 
 // Estatísticas
 const totalItensElement = document.getElementById('totalItens');

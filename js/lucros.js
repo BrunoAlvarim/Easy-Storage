@@ -7,6 +7,11 @@ const custoReparo = document.getElementById('custoReparo');
 const previewLucro = document.getElementById('previewLucro');
 const previewMargem = document.getElementById('previewMargem');
 
+// URL base da API (dinâmica para suporte a hospedagem)
+const API_BASE_URL = window.location.protocol === 'file:'
+  ? 'http://localhost:3001'
+  : window.location.origin;
+
 // Função para mostrar Toast
 function mostrarToast(mensagem, tipo = 'sucesso') {
   const conteudo = document.getElementById('toastConteudo');
@@ -423,7 +428,7 @@ window.onload = () => {
 
 async function carregarItensSelect() {
     try {
-        const response = await fetch('/api/item');
+        const response = await fetch(`${API_BASE_URL}/api/item`);
         const itens = await response.json();
 
         const select = document.getElementById('selectItem');

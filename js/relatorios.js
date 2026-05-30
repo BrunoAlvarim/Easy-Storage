@@ -1,3 +1,8 @@
+// URL base da API (dinâmica para suporte a hospedagem)
+const API_BASE_URL = window.location.protocol === 'file:'
+  ? 'http://localhost:3001'
+  : window.location.origin;
+
 // Elementos do DOM
 const toast = document.getElementById('toast');
 const modalConfirmacao = document.getElementById('modalConfirmacao');
@@ -95,7 +100,7 @@ async function filtrarRelatorioMes() {
   const dataFim = filtroDataFimMes.value;
 
   try {
-    const response = await fetch('http://localhost:3001/api/relatorio/itens-mes');
+    const response = await fetch(`${API_BASE_URL}/api/relatorio/itens-mes`);
     const itens = await response.json();
 
     if (!response.ok) {
@@ -155,7 +160,7 @@ async function filtrarRelatorioSaida() {
   const dataFim = filtroDataFimSaida.value;
 
   try {
-    const response = await fetch('http://localhost:3001/api/relatorio/saidas');
+    const response = await fetch(`${API_BASE_URL}/api/relatorio/saidas`);
     const removidos = await response.json();
 
     if (!response.ok) {
@@ -447,7 +452,7 @@ function excluirItemSaida(index) {
 // Funções de exportação PDF
 async function exportarPDFMes() {
   try {
-    const response = await fetch('http://localhost:3001/api/relatorio/exportar/itens');
+    const response = await fetch(`${API_BASE_URL}/api/relatorio/exportar/itens`);
     if (response.ok) {
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
@@ -470,7 +475,7 @@ async function exportarPDFMes() {
 
 async function exportarPDFSaida() {
   try {
-    const response = await fetch('http://localhost:3001/api/relatorio/exportar/saidas');
+    const response = await fetch(`${API_BASE_URL}/api/relatorio/exportar/saidas`);
     if (response.ok) {
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);

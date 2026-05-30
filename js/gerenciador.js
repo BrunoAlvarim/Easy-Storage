@@ -1,7 +1,11 @@
 let editIndex = null;
 let itensFiltrados = [];
 let todosItens = [];
-const API_BASE_URL = window.location.origin;
+
+// URL base da API (dinâmica para suporte a hospedagem)
+const API_BASE_URL = window.location.protocol === 'file:'
+  ? 'http://localhost:3001'
+  : window.location.origin;
 
 // Elementos do DOM para toast e modal
 const toast = document.getElementById('toast');

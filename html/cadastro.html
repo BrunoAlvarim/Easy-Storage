@@ -212,6 +212,11 @@
       }, 4000);
     }
 
+    // URL base da API (dinâmica para suporte a hospedagem)
+    const API_BASE_URL = window.location.protocol === 'file:'
+      ? 'http://localhost:3001'
+      : window.location.origin;
+
     async function cadastrarUsuario() {
       const nome = document.getElementById('nome').value.trim();
       const email = document.getElementById('email').value.trim();
@@ -229,7 +234,7 @@
       }
 
       try {
-        const response = await fetch('http://localhost:3001/cadastro', {
+        const response = await fetch(`${API_BASE_URL}/cadastro`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
