@@ -445,5 +445,4 @@
   // Exporta o `app` (Express é uma função compatível com handler do Vercel).
   // Anexamos propriedades úteis para testes locais (`server`) e para fechar o pool.
   module.exports = app;
-  module.exports.server = server;
-  module.exports.closePool = () => pool.end();
+  module.exports.default = app; 
